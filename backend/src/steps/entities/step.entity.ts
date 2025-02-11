@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Puzzle } from '../puzzles/puzzle.entity';
+import { Puzzle } from "../../puzzles/entities/puzzle.entity";
 
 @Entity()
 export class Step {

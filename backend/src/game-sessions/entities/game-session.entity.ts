@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./User"; 
-import { Puzzle } from "./Puzzle"; 
+import { User } from "../../users/entities/user.entity";
+import { Puzzle } from "../../puzzles/entities/puzzle.entity";
+
 
 @Entity() 
 export class GameSession {

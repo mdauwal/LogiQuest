@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Step } from "./step"; 
+import { Step } from "../../steps/entities/step.entity";
+
 
 @Entity()
 export class Puzzle {
