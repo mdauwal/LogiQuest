@@ -6,9 +6,17 @@ import { PuzzlesModule } from './puzzles/puzzles.module';
 import { StepsModule } from './steps/steps.module';
 import { GameSessionsModule } from './game-sessions/game-sessions.module';
 import { AchievementsModule } from './achievements/achievements.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [UsersModule, PuzzlesModule, StepsModule, GameSessionsModule, AchievementsModule],
+  imports: [
+    UsersModule,
+    PuzzlesModule,
+    StepsModule,
+    GameSessionsModule,
+    AchievementsModule,
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
