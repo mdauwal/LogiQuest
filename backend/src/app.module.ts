@@ -7,6 +7,7 @@ import { StepsModule } from './steps/steps.module';
 import { GameSessionsModule } from './game-sessions/game-sessions.module';
 import { AchievementsModule } from './achievements/achievements.module';
 import { AuthModule } from './auth/auth.module';
+import { ProgressModule } from './progress/progress.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { AuthModule } from './auth/auth.module';
     GameSessionsModule,
     AchievementsModule,
     AuthModule,
+    ProgressModule,
   ],
   controllers: [AppController],
   providers: [AppService],
