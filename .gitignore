@@ -22,3 +22,6 @@ backend/.env.test
 backend/.env.production
 backend/.cache
 backend/.DS_Store
+
+
+.DS_Store
