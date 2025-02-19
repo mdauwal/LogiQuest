@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsString, IsEmail, MinLength, MaxLength } from 'class-validator';
 import { Exclude } from 'class-transformer';
 
@@ -31,6 +32,8 @@ export class AuthResponseDto {
     id: number;
     username: string;
   };
+
+  refreshToken: string;
 
   constructor(partial: Partial<AuthResponseDto>) {
     Object.assign(this, partial);

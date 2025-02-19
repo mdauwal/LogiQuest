@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { ProgressResponseDto, UpdateProgressDto } from './dto/progress.dto';
 
@@ -12,7 +13,16 @@ export class ProgressService {
       lastAttempt: new Date(),
     });
   }
+  private progress = {};
 
+  getUserProgress(userId: string) {
+    return this.progress[userId] || {};
+  }
+
+  updateChainProgress(userId: string, chainId: number, status: string) {
+    this.progress[userId] = { [chainId]: status };
+    return { message: 'Progress updated' };
+  }
   update(
     id: number,
     updateProgressDto: UpdateProgressDto,
