@@ -1,34 +1,34 @@
-import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { User } from "../../users/entities/user.entity";
-import { Puzzle } from "../../puzzles/entities/puzzle.entity";
+import { Entity, PrimaryGeneratedColumn, ManyToOne, Column, CreateDateColumn, UpdateDateColumn } from "typeorm"
+import { User } from "../../users/entities/user.entity"
+import { Chain } from "../../chains/entities/chain.entity"
 
-
-@Entity() 
+@Entity()
 export class GameSession {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number
 
-    @ManyToOne(() => User)
-    user: User;
+  @ManyToOne(() => User)
+  user: User
 
-    @ManyToOne(() => Puzzle)
-    puzzle: Puzzle;
+  @ManyToOne(() => Chain)
+  chain: Chain
 
-    @Column()
-    currentStep: number;
+  @Column()
+  currentStep: number
 
-    @Column()
-    score: number;
+  @Column()
+  score: number
 
-    @Column({ type: "enum", enum: ["active", "completed", "abandoned"] }) 
-    status: "active" | "completed" | "abandoned";
+  @Column({ type: "enum", enum: ["active", "completed", "abandoned"] })
+  status: "active" | "completed" | "abandoned"
 
-    @Column()
-    attempts: number;
+  @Column()
+  attempts: number
 
-    @CreateDateColumn()
-    startedAt: Date;
+  @CreateDateColumn()
+  startTime: Date
 
-    @UpdateDateColumn()
-    lastActive: Date;
+  @UpdateDateColumn()
+  lastActive: Date
 }
+
