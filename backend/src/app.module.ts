@@ -11,12 +11,15 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ProgressModule } from './progress/progress.module';
 import { ChainModule } from './chain/chain.module';
+import { DatabaseModule } from './database/database.module';
+import { validateConfig } from './config/config.validation';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      // add appropriate envFilePath,
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      validate: validateConfig, // Load environment variables
     }),
     UsersModule,
     PuzzlesModule,
@@ -26,6 +29,7 @@ import { ChainModule } from './chain/chain.module';
     AuthModule,
     ProgressModule,
     ChainModule,
+    DatabaseModule, // ✅ Correctly placed inside imports array
   ],
   controllers: [AppController],
   providers: [AppService],
