@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -11,11 +12,14 @@ import { AchievementsModule } from './achievements/achievements.module';
 import { AuthModule } from './auth/auth.module';
 import { ProgressModule } from './progress/progress.module';
 import { ChainModule } from './chain/chain.module';
+import { DatabaseModule } from './database/database.module';
+import { validateConfig } from './config/config.validation';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+
       // Set the correct path for your environment file if needed
       envFilePath: '.env',
     }),
@@ -28,6 +32,9 @@ import { ChainModule } from './chain/chain.module';
       database: process.env.DB_NAME || 'logiquest',
       autoLoadEntities: true, // Auto-loads entities so you don't have to manually add them
       synchronize: true, // Set to false in production
+
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      validate: validateConfig, // Load environment variables
     }),
     UsersModule,
     PuzzlesModule,
@@ -37,6 +44,7 @@ import { ChainModule } from './chain/chain.module';
     AuthModule,
     ProgressModule,
     ChainModule,
+    DatabaseModule, // ✅ Correctly placed inside imports array
   ],
   controllers: [AppController],
   providers: [AppService],
