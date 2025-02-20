@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,27 +11,16 @@ import { AchievementsModule } from './achievements/achievements.module';
 import { AuthModule } from './auth/auth.module';
 import { ProgressModule } from './progress/progress.module';
 import { ChainModule } from './chain/chain.module';
+import { DatabaseModule } from './database/database.module';
+import { validateConfig } from './config/config.validation';
 
 @Module({
   imports: [
     // Load environment variables from .env
     ConfigModule.forRoot({
-      isGlobal: true, // Makes env variables available globally
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: parseInt(configService.get<string>('DB_PORT'), 10) || 5432,
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABASE'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.get<string>('NODE_ENV') !== 'production',
-        autoLoadEntities: true,
-      }),
-      inject: [ConfigService],
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      validate: validateConfig, // Load environment variables
     }),
     UsersModule,
     PuzzlesModule,
@@ -42,6 +30,7 @@ import { ChainModule } from './chain/chain.module';
     AuthModule,
     ProgressModule, 
     ChainModule,
+    DatabaseModule, // ✅ Correctly placed inside imports array
   ],
   controllers: [AppController],
   providers: [AppService],
