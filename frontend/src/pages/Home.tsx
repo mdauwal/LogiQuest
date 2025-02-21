@@ -1,10 +1,12 @@
+import FaqsSection from "../components/FaqsSection";
 import Footer from "../components/Footer";
 
 const Home = () => {
   return (
     <>
       {/* paste your page component below here */}
-      <Footer />
+        <FaqsSection/>
+        <Footer />
       {/* paste your page component above here */}
     </>
   );

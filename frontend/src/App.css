@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+
 #root {
   margin: 0 auto;
   text-align: center;
@@ -37,4 +40,8 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
 }
