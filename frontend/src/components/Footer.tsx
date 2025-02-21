@@ -77,7 +77,7 @@ export default function Footer() {
                 {section.heading}
               </h2>
               <nav aria-label={`${section.heading} links`}>
-                <ul className="h-[318px] text-left flex flex-col gap-[10px]">
+                <ul className="h-[318px] text-left flex flex-col gap-[10px] custom-list">
                   {section.links.map((current) => (
                     <li key={current}>
                       <a
