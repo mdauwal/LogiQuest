@@ -10,24 +10,15 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProgressModule } from './progress/progress.module';
 import { ChainModule } from './chain/chain.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseModule } from './database/database.module';
+import { validateConfig } from './config/config.validation';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.test']
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory:( configService:ConfigService ) => ({
-        type: 'postgres',
-        url: configService.get<string>('DATABASE_URL'),
-        synchronize: true, // Set to false during  production
-        autoLoadEntities: true,
-        ssl: false, 
-      })
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      validate: validateConfig, // Load environment variables
     }),
     UsersModule,
     PuzzlesModule,
@@ -37,6 +28,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     AuthModule,
     ProgressModule,
     ChainModule,
+    DatabaseModule, // ✅ Correctly placed inside imports array
   ],
   controllers: [AppController],
   providers: [AppService],
