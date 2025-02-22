@@ -45,6 +45,7 @@ export class ProgressController {
     @Param('id') id: string,
     @Body() updateProgressDto: UpdateProgressDto,
   ): Promise<ProgressResponseDto> {
-    return this.progressService.update(+id, updateProgressDto);
+    const userId = 1; // Replace this with actual user logic (e.g., from a JWT token or session)
+    return this.progressService.update(userId, +id, updateProgressDto);
   }
 }

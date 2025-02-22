@@ -1,7 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import { ChainService } from './chain.service';
-
 @Controller('chains')
 export class ChainController {
   constructor(private chainService: ChainService) {}
