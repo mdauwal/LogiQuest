@@ -1,4 +1,7 @@
-import { Entity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Chain {}
+export class Chain {
+  @PrimaryGeneratedColumn()
+  id: number
+}

@@ -1,4 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,7 +10,6 @@ import { StepsModule } from './steps/steps.module';
 import { GameSessionsModule } from './game-sessions/game-sessions.module';
 import { AchievementsModule } from './achievements/achievements.module';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from '@nestjs/config';
 import { ProgressModule } from './progress/progress.module';
 import { ChainModule } from './chain/chain.module';
 import { DatabaseModule } from './database/database.module';
@@ -16,6 +17,7 @@ import { validateConfig } from './config/config.validation';
 
 @Module({
   imports: [
+    // Load environment variables from .env
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
@@ -27,7 +29,7 @@ import { validateConfig } from './config/config.validation';
     GameSessionsModule,
     AchievementsModule,
     AuthModule,
-    ProgressModule,
+    ProgressModule, 
     ChainModule,
     DatabaseModule, // ✅ Correctly placed inside imports array
   ],
