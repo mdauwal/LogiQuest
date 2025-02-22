@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { User } from '../../src/users/entities/user.entity';
-// import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 
 export async function seedAuth(dataSource: DataSource) {
   const userRepo = dataSource.getRepository(User);
@@ -9,7 +9,7 @@ export async function seedAuth(dataSource: DataSource) {
   await userRepo.clear();
 
   // Hash passwords securely before storing them
-  // const hashedPassword = await bcrypt.hash('Test@123', 10);
+  const hashedPassword = await bcrypt.hash('Test@123', 10);
 
   // Insert test users with hashed passwords
   await userRepo.save([
@@ -17,13 +17,13 @@ export async function seedAuth(dataSource: DataSource) {
       id: 1, // Remove if auto-generated
       name: 'John Doe',
       email: 'john@example.com',
-      // password: hashedPassword, // Store securely hashed password
+      password: hashedPassword, // Store securely hashed password
     },
     {
       id: 2,
       name: 'Jane Doe',
       email: 'jane@example.com',
-      // password: hashedPassword,
+      password: hashedPassword,
     },
   ]);
 }
