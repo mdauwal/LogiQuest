@@ -6,6 +6,9 @@ export default {
       fontFamily: {
         prompt: ["font-prompt", "sans-serif"],
       },
+      backgroundColor:{
+        whychoseus:' rgba(3, 51, 48, 1)'
+      }
     },
   },
   plugins: [],
