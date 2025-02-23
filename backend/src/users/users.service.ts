@@ -1,64 +1,64 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  forwardRef,
-  Inject,
+  ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
-import { Repository } from 'typeorm';
 import { UpdateProfileDto } from './dto/update-profile-dto.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AuthService } from 'src/auth/auth.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+  private users = [];
 
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
-  ) {}
-
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
-  }
-
-  async updateProfile(userId: number, dto: UpdateProfileDto): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    Object.assign(user, dto); // Update user fields
-    return this.userRepository.save(user);
-  }
-
-  async getProfile(userId: number): Promise<User> {
-    const user = await this.userRepository.findOne({ where: { id: userId } });
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  async getProfile(userId: string) {
+    const user = this.users.find((u) => u.id === userId);
+    if (!user) throw new NotFoundException('User not found');
     return user;
   }
-  findAll() {
-    return `This action returns all users`;
+
+  async updateProfile(userId: string, dto: UpdateProfileDto) {
+    const user = this.users.find((u) => u.id === userId);
+    if (!user) throw new NotFoundException('User not found');
+
+    Object.assign(user, dto);
+    return { message: 'Profile updated successfully', user };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async changePassword(userId: string, dto: ChangePasswordDto) {
+    const user = this.users.find((u) => u.id === userId);
+    if (!user) throw new NotFoundException('User not found');
+
+    const isMatch = await bcrypt.compare(dto.oldPassword, user.password);
+    if (!isMatch) throw new ForbiddenException('Incorrect old password');
+
+    user.password = await bcrypt.hash(dto.newPassword, 10);
+    return { message: 'Password updated successfully' };
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async deactivateAccount(userId: string) {
+    const userIndex = this.users.findIndex((u) => u.id === userId);
+    if (userIndex === -1) throw new NotFoundException('User not found');
+
+    this.users.splice(userIndex, 1);
+    return { message: 'Account deactivated successfully' };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async getAllUsers() {
+    return this.users;
+  }
+
+  async getUserById(userId: string) {
+    const user = this.users.find((u) => u.id === userId);
+    if (!user) throw new NotFoundException('User not found');
+    return user;
+  }
+
+  async deleteUser(userId: string) {
+    const userIndex = this.users.findIndex((u) => u.id === userId);
+    if (userIndex === -1) throw new NotFoundException('User not found');
+
+    this.users.splice(userIndex, 1);
+    return { message: 'User deleted successfully' };
   }
 }
