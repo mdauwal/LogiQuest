@@ -1,24 +1,43 @@
 import {
-  ForbiddenException,
   Injectable,
   NotFoundException,
+  ForbiddenException,
 } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateProfileDto } from './dto/update-profile-dto.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import * as bcrypt from 'bcryptjs';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  private users = [];
+  private users: User[] = [];
 
-  async getProfile(userId: string) {
-    const user = this.users.find((u) => u.id === userId);
+  async createUser(createUserDto: CreateUserDto): Promise<User> {
+    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    const timestamp = new Date();
+
+    const newUser: User = {
+      id: Date.now(),
+      ...createUserDto,
+      password: hashedPassword,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      walletAddress: createUserDto.walletAddress || '',
+    };
+
+    this.users.push(newUser);
+    return newUser;
+  }
+
+  async getProfile(userId: string): Promise<User> {
+    const user = this.users.find((u) => u.id === Number(userId));
     if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
   async updateProfile(userId: string, dto: UpdateProfileDto) {
-    const user = this.users.find((u) => u.id === userId);
+    const user = this.users.find((u) => u.id === Number(userId));
     if (!user) throw new NotFoundException('User not found');
 
     Object.assign(user, dto);
@@ -26,7 +45,7 @@ export class UsersService {
   }
 
   async changePassword(userId: string, dto: ChangePasswordDto) {
-    const user = this.users.find((u) => u.id === userId);
+    const user = this.users.find((u) => u.id === Number(userId));
     if (!user) throw new NotFoundException('User not found');
 
     const isMatch = await bcrypt.compare(dto.oldPassword, user.password);
@@ -37,25 +56,25 @@ export class UsersService {
   }
 
   async deactivateAccount(userId: string) {
-    const userIndex = this.users.findIndex((u) => u.id === userId);
+    const userIndex = this.users.findIndex((u) => u.id === Number(userId));
     if (userIndex === -1) throw new NotFoundException('User not found');
 
     this.users.splice(userIndex, 1);
     return { message: 'Account deactivated successfully' };
   }
 
-  async getAllUsers() {
+  async getAllUsers(): Promise<User[]> {
     return this.users;
   }
 
-  async getUserById(userId: string) {
-    const user = this.users.find((u) => u.id === userId);
+  async getUserById(userId: string): Promise<User> {
+    const user = this.users.find((u) => u.id === Number(userId));
     if (!user) throw new NotFoundException('User not found');
     return user;
   }
 
   async deleteUser(userId: string) {
-    const userIndex = this.users.findIndex((u) => u.id === userId);
+    const userIndex = this.users.findIndex((u) => u.id === Number(userId));
     if (userIndex === -1) throw new NotFoundException('User not found');
 
     this.users.splice(userIndex, 1);
