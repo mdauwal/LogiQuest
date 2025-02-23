@@ -1,8 +1,7 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -34,8 +33,7 @@ import { validateConfig } from './config/config.validation';
       password: process.env.DB_PASSWORD || 'funbi',
       database: process.env.DB_NAME || 'logiquest',
       autoLoadEntities: true, // Auto-loads entities so you don't have to manually add them
-      synchronize: true, // Set to false in production
-
+      synchronize: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       validate: validateConfig, // Load environment variables
     }),
@@ -45,7 +43,7 @@ import { validateConfig } from './config/config.validation';
     GameSessionsModule,
     AchievementsModule,
     AuthModule,
-    ProgressModule, 
+    ProgressModule,
     ChainModule,
     DatabaseModule, // ✅ Correctly placed inside imports array
   ],
