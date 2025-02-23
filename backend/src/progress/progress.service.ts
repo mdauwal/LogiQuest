@@ -30,11 +30,17 @@ export class ProgressService {
       lastAttempt: progress.lastAttemptAt,
     };
   }
+  private progress = {};
 
-  // The update method will save or update the progress data in the database
-  async update(
-    userId: number,
-    chainId: number,
+  getUserProgress(userId: string) {
+    return this.progress[userId] || {};
+  }
+  updateChainProgress(userId: string, chainId: number, status: string) {
+    this.progress[userId] = { [chainId]: status };
+    return { message: 'Progress updated' };
+  }
+  update(
+    id: number,
     updateProgressDto: UpdateProgressDto,
   ): Promise<ProgressResponseDto> {
     let progress = await this.progressRepository.findOne({

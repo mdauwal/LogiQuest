@@ -1,7 +1,8 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -20,6 +21,19 @@ import { validateConfig } from './config/config.validation';
     // Load environment variables from .env
     ConfigModule.forRoot({
       isGlobal: true,
+
+      // Set the correct path for your environment file if needed
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres', // Change this based on your database (mysql, sqlite, etc.)
+      host: process.env.DB_HOST || 'localhost',
+      port: Number(process.env.DB_PORT) || 5433,
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'funbi',
+      database: process.env.DB_NAME || 'logiquest',
+      autoLoadEntities: true, // Auto-loads entities so you don't have to manually add them
+      synchronize: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       validate: validateConfig, // Load environment variables
     }),
@@ -29,7 +43,7 @@ import { validateConfig } from './config/config.validation';
     GameSessionsModule,
     AchievementsModule,
     AuthModule,
-    ProgressModule, 
+    ProgressModule,
     ChainModule,
     DatabaseModule, // ✅ Correctly placed inside imports array
   ],
