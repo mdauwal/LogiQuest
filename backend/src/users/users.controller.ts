@@ -28,30 +28,4 @@ export class UserController {
   updateProfile(@User() user, @Body() dto: UpdateProfileDto) {
     return this.usersService.updateProfile(user.id, dto);
   }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Patch('change-password')
-  changePassword(@User() user, @Body() dto: ChangePasswordDto) {
-    return this.usersService.changePassword(user.id, dto);
-  }
-
-  @Delete('deactivate')
-  deactivateAccount(@User() user) {
-    return this.usersService.deactivateAccount(user.id);
-  }
-
-  @Get()
-  getAllUsers() {
-    return this.usersService.getAllUsers();
-  }
-
-  @Get(':id')
-  getUserById(@Param('id') id: string) {
-    return this.usersService.getUserById(id);
-  }
-
-  @Delete(':id')
-  deleteUser(@Param('id') id: string) {
-    return this.usersService.deleteUser(id);
-  }
 }
