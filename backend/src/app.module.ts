@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
@@ -8,7 +11,6 @@ import { StepsModule } from './steps/steps.module';
 import { GameSessionsModule } from './game-sessions/game-sessions.module';
 import { AchievementsModule } from './achievements/achievements.module';
 import { AuthModule } from './auth/auth.module';
-import { ConfigModule } from '@nestjs/config';
 import { ProgressModule } from './progress/progress.module';
 import { ChainModule } from './chain/chain.module';
 import { DatabaseModule } from './database/database.module';
@@ -18,8 +20,22 @@ import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
+    // Load environment variables from .env
     ConfigModule.forRoot({
       isGlobal: true,
+
+      // Set the correct path for your environment file if needed
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres', // Change this based on your database (mysql, sqlite, etc.)
+      host: process.env.DB_HOST || 'localhost',
+      port: Number(process.env.DB_PORT) || 5433,
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'funbi',
+      database: process.env.DB_NAME || 'logiquest',
+      autoLoadEntities: true, // Auto-loads entities so you don't have to manually add them
+      synchronize: true,
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       validate: validateConfig, // Load environment variables
     }),

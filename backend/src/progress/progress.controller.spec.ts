@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProgressController } from './progress.controller';
 import { ProgressService } from './progress.service';

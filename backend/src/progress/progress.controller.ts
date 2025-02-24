@@ -1,4 +1,5 @@
-import { Controller, Get, Param, Patch, Body } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { Controller, Get, Param, Patch, Body, Post } from '@nestjs/common';
 import { ProgressService } from './progress.service';
 import { ProgressResponseDto, UpdateProgressDto } from './dto/progress.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
@@ -17,6 +18,23 @@ export class ProgressController {
     return this.progressService.findOne(+id);
   }
 
+  @Get()
+  getUserProgress(@Body('userId') userId: string) {
+    return this.progressService.getUserProgress(userId);
+  }
+
+  @Post('chains/:id')
+  updateChainProgress(
+    @Body('userId') userId: string,
+    @Param('id') chainId: number,
+    @Body() body: { status: string },
+  ) {
+    return this.progressService.updateChainProgress(
+      userId,
+      chainId,
+      body.status,
+    );
+  }
   @Patch(':id')
   @ApiOperation({ summary: 'Update progress by ID' })
   @ApiParam({ name: 'id', type: 'number', description: 'The ID of the progress entry' })
@@ -27,6 +45,7 @@ export class ProgressController {
     @Param('id') id: string,
     @Body() updateProgressDto: UpdateProgressDto,
   ): Promise<ProgressResponseDto> {
-    return this.progressService.update(+id, updateProgressDto);
+    const userId = 1; // Replace this with actual user logic (e.g., from a JWT token or session)
+    return this.progressService.update(userId, +id, updateProgressDto);
   }
 }
