@@ -22,6 +22,9 @@ export class User {
   @Column({ nullable: true })
   walletAddress: string;
 
+  @Column({nullable: true})
+  refreshToken: string
+
   @CreateDateColumn()
   createdAt: Date;
 

@@ -13,6 +13,8 @@ import { ProgressModule } from './progress/progress.module';
 import { ChainModule } from './chain/chain.module';
 import { DatabaseModule } from './database/database.module';
 import { validateConfig } from './config/config.validation';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -21,6 +23,10 @@ import { validateConfig } from './config/config.validation';
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       validate: validateConfig, // Load environment variables
     }),
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 10,
+    }]),
     UsersModule,
     PuzzlesModule,
     StepsModule,
@@ -32,6 +38,11 @@ import { validateConfig } from './config/config.validation';
     DatabaseModule, // ✅ Correctly placed inside imports array
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

@@ -8,7 +8,7 @@ import { RegisterDto, LoginDto, AuthResponseDto } from './dto/auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('register')
+  @Post('/register')
   @ApiOperation({ summary: 'Register a new user' })
   @ApiBody({ type: RegisterDto }) // Describes the body for the 'register' endpoint
   @ApiResponse({ status: 201, description: 'User registered successfully.' })
@@ -28,5 +28,11 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
   async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
     return this.authService.login(loginDto);
+  }
+
+
+  @Post('refresh')
+  async refreshToken(@Body('refreshToken') token: string) {
+    return this.authService.refreshToken(token);
   }
 }
