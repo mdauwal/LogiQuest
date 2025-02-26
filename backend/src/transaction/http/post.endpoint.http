@@ -4,5 +4,10 @@ POST http://localhost:3000/transactions
 Content-Type: application/json 
 
   {
-    
+    "id": ,
+    "user": "",
+    "amount": "",
+    "type": "",
+    "status": "",
+    "createdAt": "",
   }

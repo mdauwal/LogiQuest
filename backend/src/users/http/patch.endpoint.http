@@ -4,5 +4,11 @@ PATCH http://localhost:3000/users/1
 Content-Type: application:json 
 
   {
-
+    "id": ,
+    "username": "",
+    "email": "",
+    "password":"",
+    "walletAddress": "",
+    "createdAt": "" ,
+    "updatedAt": ""
   }

@@ -4,5 +4,9 @@ PATCH http://localhost:3000/steps/1
 Content-Type: application/json 
 
 {
-
+ "id": ,
+ "description": "",
+ "order": "",
+ "hints": "",
+ "puzzle": ""
 }

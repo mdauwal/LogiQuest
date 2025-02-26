@@ -4,5 +4,13 @@ POST http://localhost:3000/game-sessions
 Content-Type:application/json
 
 {
-   
+   "id": "",
+   "user": "",
+   "chain": "",
+   "currentStep": "",
+   "score": "",
+   "status": "",
+   "attempts": "",
+   "startTime": "",
+   "lastActive": ""
 }
