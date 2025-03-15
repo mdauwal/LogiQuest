@@ -27,7 +27,6 @@ export class UsersService {
     };
 
     this.users.push(newUser);
-    console.log('DB Password:', process.env.DB_PASSWORD);
     return newUser;
   }
 

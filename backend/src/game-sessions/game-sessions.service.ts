@@ -1,47 +1,57 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common"
-import { InjectRepository } from "@nestjs/typeorm"
-import type { Repository } from "typeorm"
-import { InjectRedis } from "@nestjs-modules/ioredis";
-import type { Redis } from "ioredis";
-import { Cron, CronExpression } from "@nestjs/schedule"
-import { GameSession } from "./entities/game-session.entity"
-import type { CreateGameSessionDto } from "./dto/create-game-session.dto"
-import { User } from "../users/entities/user.entity"
-import { Chain } from "../chains/entities/chain.entity"
-import { Logger } from "@nestjs/common"
-import { MoreThanOrEqual } from "typeorm"
+import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import type { Repository } from "typeorm";
+import { Cron, CronExpression } from "@nestjs/schedule";
+import { GameSession } from "./entities/game-session.entity";
+import type { CreateGameSessionDto } from "./dto/create-game-session.dto";
+import { User } from "../users/entities/user.entity";
+import { Logger } from "@nestjs/common";
+import { MoreThanOrEqual } from "typeorm";
+import { Puzzle } from "src/puzzles/entities/puzzle.entity";
+
 
 @Injectable()
 export class GameSessionsService {
   private readonly logger = new Logger(GameSessionsService.name);
+  // Simple in-memory cache as alternative to Redis
+  private sessionCache = new Map<number, { data: GameSession, timestamp: number }>();
 
   constructor(
     @InjectRepository(GameSession)
     private gameSessionRepository: Repository<GameSession>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    @InjectRepository(Chain)
-    private chainRepository: Repository<Chain>,
-    @InjectRedis() private readonly redis: Redis,
-    @InjectRepository(GameSession)
-    private gameSessionsRepository: Repository<GameSession>,
+    @InjectRepository(Puzzle)
+    private puzzleRepository: Repository<Puzzle>,
   ) {}
 
-  private async cacheGameSession(gameSession: GameSession): Promise<void> {
+  private cacheGameSession(gameSession: GameSession): void {
     try {
-      await this.redis.set(`gameSession:${gameSession.id}`, JSON.stringify(gameSession), "EX", 3600)
+      this.sessionCache.set(gameSession.id, {
+        data: gameSession,
+        timestamp: Date.now() + 3600000 // 1 hour expiration
+      });
     } catch (error) {
-      this.logger.error(`Failed to cache game session: ${error.message}`, error.stack)
+      this.logger.error(`Failed to cache game session: ${error.message}`, error.stack);
     }
   }
 
-  private async getCachedGameSession(id: number): Promise<GameSession | null> {
+  private getCachedGameSession(id: number): GameSession | null {
     try {
-      const cachedSession = await this.redis.get(`gameSession:${id}`)
-      return cachedSession ? JSON.parse(cachedSession) : null
+      const cached = this.sessionCache.get(id);
+      if (cached && cached.timestamp > Date.now()) {
+        return cached.data;
+      }
+      
+      // Remove expired entry
+      if (cached) {
+        this.sessionCache.delete(id);
+      }
+      
+      return null;
     } catch (error) {
-      this.logger.error(`Failed to get cached game session: ${error.message}`, error.stack)
-      return null
+      this.logger.error(`Failed to get cached game session: ${error.message}`, error.stack);
+      return null;
     }
   }
 
@@ -70,12 +80,12 @@ export class GameSessionsService {
   }
   
   async update(id: number, updateData: Partial<GameSession>): Promise<GameSession> {
-    const gameSession = await this.gameSessionsRepository.findOne({ where: { id } });
+    const gameSession = await this.gameSessionRepository.findOne({ where: { id } });
     if (!gameSession) {
       throw new NotFoundException(`GameSession with ID ${id} not found`);
     }
     Object.assign(gameSession, updateData);
-    return this.gameSessionsRepository.save(gameSession);
+    return this.gameSessionRepository.save(gameSession);
 }
 
 
@@ -84,15 +94,15 @@ export class GameSessionsService {
   async create(createGameSessionDto: CreateGameSessionDto): Promise<GameSession> {
     try {
       const user = await this.userRepository.findOne({ where: { id: createGameSessionDto.userId } });
-      const chain = await this.chainRepository.findOne({ where: { id: createGameSessionDto.chainId } });      
+      const puzzle = await this.puzzleRepository.findOne({ where: { id: createGameSessionDto.chainId } });      
 
-      if (!user || !chain) {
-        throw new NotFoundException("User or Chain not found")
+      if (!user || !puzzle) {
+        throw new NotFoundException("User or Puzzle not found")
       }
 
       const gameSession = this.gameSessionRepository.create({
         user,
-        chain,
+        puzzle,
         currentStep: 0,
         score: 0,
         status: "active",
@@ -138,23 +148,24 @@ export class GameSessionsService {
   @Cron(CronExpression.EVERY_MINUTE)
   async handleSessionTimeouts() {
     try {
-      const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000)
+      const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
       const timedOutSessions = await this.gameSessionRepository.find({
         where: {
           status: "active",
           lastActive: MoreThanOrEqual(thirtyMinutesAgo),
         },
-      })
+      });
 
       for (const session of timedOutSessions) {
-        session.status = "abandoned"
-        await this.gameSessionRepository.save(session)
-        await this.redis.del(`gameSession:${session.id}`)
+        session.status = "abandoned";
+        await this.gameSessionRepository.save(session);
+        // Remove from cache
+        this.sessionCache.delete(session.id);
       }
 
-      this.logger.log(`Handled timeouts for ${timedOutSessions.length} sessions`)
+      this.logger.log(`Handled timeouts for ${timedOutSessions.length} sessions`);
     } catch (error) {
-      this.logger.error(`Failed to handle session timeouts: ${error.message}`, error.stack)
+      this.logger.error(`Failed to handle session timeouts: ${error.message}`, error.stack);
     }
   }
 }

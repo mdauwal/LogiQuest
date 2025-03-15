@@ -7,8 +7,9 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
-import { Chain } from '../../chains/entities/chain.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Puzzle } from 'src/puzzles/entities/puzzle.entity';
+
 
 @Entity()
 export class GameSession {
@@ -23,12 +24,12 @@ export class GameSession {
   })
   user: User;
 
-  @ManyToOne(() => Chain)
+  @ManyToOne(() => Puzzle)
   @ApiProperty({
-    description: 'The chain being played in this session',
-    type: () => Chain,
+    description: 'The Puzzle being played in this session',
+    type: () => Puzzle,
   })
-  chain: Chain;
+  puzzle: Puzzle;
 
   @Column()
   @ApiProperty({
