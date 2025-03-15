@@ -9,6 +9,7 @@ import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { RefreshTokenDto } from './dto/refresh-token-dto.dto';
 import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService, // Ensure this service is properly injected
+    private readonly configService: ConfigService,
+
   ) {}
 
   async register(registerDto: RegisterDto): Promise<RegisterDto> {
@@ -54,7 +57,7 @@ export class AuthService {
     const { refreshToken } = refreshTokenDto;
 
     try {
-      const decoded = jwt.verify(refreshToken, 'REFRESH_SECRET') as {
+      const decoded = jwt.verify(refreshToken, this.configService.get('JWT_REFRESH_SECRET')) as {
         sub: string;
       };
       const userId = decoded.sub;
