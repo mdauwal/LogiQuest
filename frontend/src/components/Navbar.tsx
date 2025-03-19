@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const navItems = [
-  { label: 'How To play', href: '/how-to-play' },
+  { label: 'How To Play', href: '/how-to-play' },
   { label: 'Game Modes', href: '/game-modes' },
   { label: 'FAQs', href: '/faqs' },
   { label: 'About Us', href: '/about' },
