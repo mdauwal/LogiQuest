@@ -6,5 +6,4 @@ pub mod types;
 #[cfg(test)]
 pub mod tests {
     pub mod test_logiquest;
-    
 }
