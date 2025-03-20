@@ -45,7 +45,7 @@ mod LogiQuest {
                         has_levels: true,
                         is_daily: false,
                         aids_allowed: AidsAllowed {
-                            audience_poll: false, call_friend: false, fifty_fifty: false,
+                            audience_poll: true, call_friend: true, fifty_fifty: true,
                         },
                         base_reward: 100,
                         time_bonus: 0,
@@ -89,7 +89,7 @@ mod LogiQuest {
                         has_levels: false,
                         is_daily: true,
                         aids_allowed: AidsAllowed {
-                            audience_poll: true, call_friend: true, fifty_fifty: true,
+                            audience_poll: false, call_friend: false, fifty_fifty: true,
                         },
                         base_reward: 300,
                         time_bonus: 0,
@@ -107,8 +107,8 @@ mod LogiQuest {
                         name: 'Time Blitz',
                         description: 'Time-limited puzzles',
                         is_timed: true,
-                        time_limit: 60,
-                        has_levels: false,
+                        time_limit: 120,
+                        has_levels: true,
                         is_daily: false,
                         aids_allowed: AidsAllowed {
                             audience_poll: true, call_friend: true, fifty_fifty: true,
