@@ -1,4 +1,4 @@
-use contract::types::{AidsUsed, GameMode};
+use contract::types::{AidsUsed, GameMode, UserActivity, SessionDetails};
 use starknet::ContractAddress;
 
 #[starknet::interface]
@@ -15,4 +15,24 @@ pub trait ILogiQuest<TContractState> {
         rewards_earned: u256,
     );
     fn get_player_rewards(self: @TContractState, player: ContractAddress) -> u256;
+    
+    // New functions for user activity tracking
+    fn update_user_activity(
+        ref self: TContractState,
+        player: ContractAddress,
+        mode_id: u8,
+        session_details: SessionDetails,
+        aids_used: AidsUsed,
+        day: u32,
+    );
+    fn get_user_activity(
+        self: @TContractState, 
+        player: ContractAddress, 
+        mode_id: u8
+    ) -> UserActivity;
+    fn get_daily_challenge_activity(
+        self: @TContractState, 
+        player: ContractAddress, 
+        day: u32
+    ) -> UserActivity;
 }

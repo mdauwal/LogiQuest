@@ -39,3 +39,39 @@ pub struct PlayerProgress {
     pub aids_used: AidsUsed,
     pub total_rewards: u256,
 }
+
+#[derive(Copy, Drop, Serde, starknet::Store)]
+pub struct SessionDetails {
+    pub completed: bool,
+    pub timestamp: u64,
+    pub duration: u32,  // in seconds
+    pub score: u32,
+}
+
+#[derive(Copy, Drop, Serde, starknet::Store)]
+pub struct DailyActivityCounter {
+    pub completed_sessions: u32,
+    pub total_duration: u32,  // in seconds
+    pub day: u32,
+}
+
+#[derive(Copy, Drop, Serde, starknet::Store)]
+pub struct AidUsageCounter {
+    pub audience_poll_count: u32,
+    pub call_friend_count: u32,
+    pub fifty_fifty_count: u32,
+}
+
+#[derive(Copy, Drop, Serde, starknet::Store)]
+pub struct UserActivity {
+    pub player: starknet::ContractAddress,
+    pub mode_id: u8,
+    pub sessions_completed: u32,
+    pub total_score: u32,
+    pub total_time_spent: u32,  // in seconds
+    pub last_session: SessionDetails,
+    pub aid_usage: AidUsageCounter,
+    pub current_streak: u32,
+    pub best_streak: u32,
+    pub daily_activity: DailyActivityCounter,  // used for daily challenge mode
+}
