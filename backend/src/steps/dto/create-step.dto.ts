@@ -39,3 +39,13 @@ export class CreateStepDto {
   @IsString()
   correctAnswer: string;
 }
+
+export class correctAnswerDTO{
+  @ApiProperty()
+  stepId: number;
+
+  @ApiProperty()
+  @IsString()
+  answer: string;
+
+}
