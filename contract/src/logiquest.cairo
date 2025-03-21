@@ -32,8 +32,26 @@ mod LogiQuest {
 
     #[abi(embed_v0)]
     impl LogiQuest of ILogiQuest<ContractState> {
-        fn initialize_game_modes(ref self: ContractState) {
+        fn initialize_game_modes(ref self: ContractState, decimal: u8) {
             assert(!self.initialize.read(), 'Game already initialized');
+            // Validate decimal parameter
+            assert(decimal <= 18, 'Decimal too large');
+
+            // Calculate the reward multiplier based on decimal
+            let reward_multiplier = if decimal > 0 {
+                // Example: if decimal is 2, multiplier is 100 (10^2)
+                // This is a basic implementation - for a more robust solution, 
+                // you would calculate 10^decimal using a power function
+                let mut multiplier: u256 = 1;
+                let mut i: u8 = 0;
+                while i < decimal {
+                    multiplier *= 10;
+                    i += 1;
+                };
+                multiplier
+            } else {
+                1
+            };
 
             self
                 .game_modes
@@ -50,7 +68,7 @@ mod LogiQuest {
                         aids_allowed: AidsAllowed {
                             audience_poll: true, call_friend: true, fifty_fifty: true,
                         },
-                        base_reward: 100,
+                        base_reward: 100 * reward_multiplier,
                         time_bonus: 0,
                         time_bonus_multiplier: 0,
                         consecutive_bonus: 10,
@@ -72,7 +90,7 @@ mod LogiQuest {
                         aids_allowed: AidsAllowed {
                             audience_poll: true, call_friend: true, fifty_fifty: true,
                         },
-                        base_reward: 200,
+                        base_reward: 200 * reward_multiplier,
                         time_bonus: 0,
                         time_bonus_multiplier: 1,
                         consecutive_bonus: 20,
@@ -94,7 +112,7 @@ mod LogiQuest {
                         aids_allowed: AidsAllowed {
                             audience_poll: false, call_friend: false, fifty_fifty: true,
                         },
-                        base_reward: 300,
+                        base_reward: 300 * reward_multiplier,
                         time_bonus: 0,
                         time_bonus_multiplier: 1,
                         consecutive_bonus: 50,
@@ -116,7 +134,7 @@ mod LogiQuest {
                         aids_allowed: AidsAllowed {
                             audience_poll: true, call_friend: true, fifty_fifty: true,
                         },
-                        base_reward: 400,
+                        base_reward: 400 * reward_multiplier,
                         time_bonus: 0,
                         time_bonus_multiplier: 1,
                         consecutive_bonus: 60,
@@ -138,7 +156,7 @@ mod LogiQuest {
                         aids_allowed: AidsAllowed {
                             audience_poll: false, call_friend: false, fifty_fifty: false,
                         },
-                        base_reward: 500,
+                        base_reward: 500 * reward_multiplier,
                         time_bonus: 0,
                         time_bonus_multiplier: 1,
                         consecutive_bonus: 70,
@@ -160,7 +178,7 @@ mod LogiQuest {
                         aids_allowed: AidsAllowed {
                             audience_poll: false, call_friend: false, fifty_fifty: false,
                         },
-                        base_reward: 700,
+                        base_reward: 700 * reward_multiplier,
                         time_bonus: 0,
                         time_bonus_multiplier: 1,
                         consecutive_bonus: 90,
@@ -182,7 +200,7 @@ mod LogiQuest {
                         aids_allowed: AidsAllowed {
                             audience_poll: false, call_friend: false, fifty_fifty: false,
                         },
-                        base_reward: 800,
+                        base_reward: 800 * reward_multiplier,
                         time_bonus: 0,
                         time_bonus_multiplier: 1,
                         consecutive_bonus: 100,
@@ -204,7 +222,7 @@ mod LogiQuest {
                         aids_allowed: AidsAllowed {
                             audience_poll: false, call_friend: false, fifty_fifty: false,
                         },
-                        base_reward: 1000,
+                        base_reward: 1000 * reward_multiplier,
                         time_bonus: 0,
                         time_bonus_multiplier: 1,
                         consecutive_bonus: 120,

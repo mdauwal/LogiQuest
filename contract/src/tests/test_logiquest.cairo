@@ -42,7 +42,7 @@ fn test_initialize_game_modes() {
     let contract_address = deploy_contract();
     let dispatcher = ILogiQuestDispatcher { contract_address };
 
-    dispatcher.initialize_game_modes();
+    dispatcher.initialize_game_modes(2);
 
     // Verify each game mode was initialized correctly
     // Classic Mode
@@ -55,7 +55,7 @@ fn test_initialize_game_modes() {
     assert(classic_mode.aids_allowed.audience_poll == true, 'Bad poll');
     assert(classic_mode.aids_allowed.call_friend == true, 'Bad call');
     assert(classic_mode.aids_allowed.fifty_fifty == true, 'Bad 50/50');
-    assert(classic_mode.base_reward == 100, 'Bad reward');
+    assert(classic_mode.base_reward == 10000, 'Bad reward');
 
     // Daily Challenge Mode
     let daily_mode = dispatcher.get_game_modes(DAILY_CHALLENGE_MODE);
@@ -68,7 +68,7 @@ fn test_initialize_game_modes() {
     assert(daily_mode.aids_allowed.audience_poll == false, 'Bad poll');
     assert(daily_mode.aids_allowed.call_friend == false, 'Bad call');
     assert(daily_mode.aids_allowed.fifty_fifty == true, 'Bad 50/50');
-    assert(daily_mode.base_reward == 300, 'Bad reward');
+    assert(daily_mode.base_reward == 30000, 'Bad reward');
 
     // Time Blitz Mode
     let blitz_mode = dispatcher.get_game_modes(TIME_BLITZ_MODE);
@@ -86,10 +86,10 @@ fn test_initialize_game_modes_twice_should_fail() {
     let dispatcher = ILogiQuestDispatcher { contract_address };
 
     // Initialize game modes for the first time
-    dispatcher.initialize_game_modes();
+    dispatcher.initialize_game_modes(2);
 
     // Trying to initialize again should fail
-    dispatcher.initialize_game_modes();
+    dispatcher.initialize_game_modes(2);
 }
 
 #[test]
@@ -98,7 +98,7 @@ fn test_get_invalid_game_mode() {
     let contract_address = deploy_contract();
     let dispatcher = ILogiQuestDispatcher { contract_address };
 
-    dispatcher.initialize_game_modes();
+    dispatcher.initialize_game_modes(2);
 
     // Try to get an invalid game mode (there are only 8 modes, from 0 to 7)
     dispatcher.get_game_modes(8);
@@ -109,7 +109,7 @@ fn test_player_progress_and_rewards() {
     let contract_address = deploy_contract();
     let dispatcher = ILogiQuestDispatcher { contract_address };
 
-    dispatcher.initialize_game_modes();
+    dispatcher.initialize_game_modes(2);
 
     let player = PLAYER();
 
@@ -127,12 +127,12 @@ fn test_player_progress_and_rewards() {
             5, // level 5
             0, // day 0 (not used for this mode)
             aids_used,
-            100 // rewards earned
+            10000 // rewards earned (with decimal=2)
         );
 
     // Check rewards
     let rewards = dispatcher.get_player_rewards(player);
-    assert(rewards == 100, 'Bad rewards');
+    assert(rewards == 10000, 'Bad rewards');
 
     // Update progress in another mode
     dispatcher
@@ -142,12 +142,12 @@ fn test_player_progress_and_rewards() {
             0, // level 0 (not used for this mode)
             1, // day 1
             AidsUsed { audience_poll: false, call_friend: false, fifty_fifty: false },
-            300 // rewards earned
+            30000 // rewards earned (with decimal=2)
         );
 
     // Check accumulated rewards
     let total_rewards = dispatcher.get_player_rewards(player);
-    assert(total_rewards == 400, 'Bad total');
+    assert(total_rewards == 40000, 'Bad total');
 
     // Stop pranking
     stop_cheat_caller_address(contract_address);
@@ -158,7 +158,7 @@ fn test_all_game_modes_exist() {
     let contract_address = deploy_contract();
     let dispatcher = ILogiQuestDispatcher { contract_address };
 
-    dispatcher.initialize_game_modes();
+    dispatcher.initialize_game_modes(2);
 
     // Check that all 8 game modes exist by requesting each one
     let modes = array![
@@ -187,7 +187,7 @@ fn test_user_activity_tracking() {
     let contract_address = deploy_contract();
     let dispatcher = ILogiQuestDispatcher { contract_address };
 
-    dispatcher.initialize_game_modes();
+    dispatcher.initialize_game_modes(2);
 
     let player = PLAYER();
 
@@ -344,7 +344,7 @@ fn test_daily_validation() {
     let contract_address = deploy_contract();
     let dispatcher = ILogiQuestDispatcher { contract_address };
 
-    dispatcher.initialize_game_modes();
+    dispatcher.initialize_game_modes(2);
 
     let player = PLAYER();
 
