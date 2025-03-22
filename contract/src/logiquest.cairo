@@ -4,6 +4,7 @@ mod LogiQuest {
     use contract::types::{AidsAllowed, AidsUsed, GameMode, PlayerProgress, UserActivity, SessionDetails, AidUsageCounter, DailyActivityCounter};
     use starknet::storage::{Map, StoragePointerReadAccess, StoragePointerWriteAccess};
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
+    use contract::utils::{entry_is_duplicate, contains_option, generate_random_list};
 
 
     #[storage]
@@ -409,6 +410,40 @@ mod LogiQuest {
             day: u32
         ) -> UserActivity {
             self.daily_challenge_activity.read((player, day))
+        }
+
+        fn set_question_options(self: @ContractState, options: Span<felt252>, answer: felt252, randomize_order: bool) -> Span<felt252> {
+            assert(options.len() == 4, 'Invalid number of options');
+
+            // Check for duplicates
+            let mut i = 0;
+            loop {
+                if i == options.len() {
+                    break;
+                }
+                assert(!entry_is_duplicate(*options.at(i), options), 'Duplicate options');
+                i += 1;
+            };
+            
+            // Check that answer is present in options
+            assert(contains_option(answer, options), 'Answer not in options');
+
+            // Randomize options order
+            if randomize_order {
+                let new_order = generate_random_list(0, 3, 4);
+                let mut new_options = array![];
+                i = 0;
+                loop {
+                    if i == options.len() {
+                        break;
+                    }
+                    let new_i = *new_order.at(i);
+                    new_options.append(*options.at(new_i.into()));
+                    i += 1;
+                };
+                return new_options.span();
+            }
+            options
         }
     }
 

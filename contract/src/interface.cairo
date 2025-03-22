@@ -35,4 +35,6 @@ pub trait ILogiQuest<TContractState> {
         player: ContractAddress, 
         day: u32
     ) -> UserActivity;
+
+    fn set_question_options(self: @TContractState, options: Span<felt252>, answer: felt252, randomize_order: bool) -> Span<felt252>;
 }
