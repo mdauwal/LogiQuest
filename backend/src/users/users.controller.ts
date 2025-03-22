@@ -23,7 +23,7 @@ import {
 import { ProgressTrackingService } from 'src/progress/progess-tracking.service';
 
 @ApiTags('Users') // Groups this controller under "Users" in Swagger
-@Controller('users')
+@Controller('api/users')
 export class UserController {
   constructor(private readonly usersService: UsersService,
     private readonly progressTrackingServices: ProgressTrackingService,

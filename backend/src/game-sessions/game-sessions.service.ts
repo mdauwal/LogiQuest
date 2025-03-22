@@ -10,6 +10,7 @@ import { MoreThanOrEqual } from "typeorm";
 import { Puzzle } from "src/puzzles/entities/puzzle.entity";
 import { ScoreService } from "./score.service";
 import { AnswerRecord } from "./entities/anwser-record";
+import { Step } from "src/steps/entities/step.entity";
 
 
 @Injectable()
@@ -25,6 +26,8 @@ export class GameSessionsService {
     private userRepository: Repository<User>,
     @InjectRepository(Puzzle)
     private puzzleRepository: Repository<Puzzle>,
+    @InjectRepository(Step)
+    private stepRepository: Repository<Step>,
     private scoreService: ScoreService
   ) {}
 
@@ -104,9 +107,10 @@ export class GameSessionsService {
         user,
         puzzle,
         currentStep: 0,
-        score: 0,
-        status: "active",
-        attempts: 1,
+        currentScore: 0,
+        answerHistory: [],
+        streakCount: 0,
+        isCompleted: false
       })
 
       const savedSession = await this.gameSessionRepository.save(gameSession)
@@ -249,7 +253,7 @@ export class GameSessionsService {
       isCorrect,
       pointsAwarded,
       currentScore: gameSession.currentScore,
-      feedback: isCorrect ? step.successFeedback : step.failureFeedback,
+      feedback: isCorrect && step.Feedback 
     };
   }
 
@@ -259,15 +263,12 @@ export class GameSessionsService {
   }
 
   private async getStepInfo(stepId: number) {
-    // This would retrieve step info from your database
-    // Mock implementation for now
-    return {
-      id: stepId,
-      correctAnswer: 'Jupiter', // This would be dynamic in real implementation
-      difficulty: 'medium',
-      successFeedback: "Correct! That's the right answer!",
-      failureFeedback: 'Not quite right. Try again!',
-    };
+    const step = await this.stepRepository.findOne({ 
+      where: { id: stepId },
+      relations: ['puzzle'] // Include any needed relations
+    });
+    if (!step) throw new NotFoundException(`Step with ID ${stepId} not found`);
+    return step;
   }
 }
 

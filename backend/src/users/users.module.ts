@@ -7,7 +7,7 @@ import { UserController } from './users.controller';
 import { ProgressModule } from 'src/progress/progress.module';
 
 @Module({
-  imports: [forwardRef(() => AuthModule), TypeOrmModule.forFeature([User]), ProgressModule],
+  imports: [forwardRef(() => AuthModule), TypeOrmModule.forFeature([User]),forwardRef(() => ProgressModule)],
   providers: [UsersService],
   controllers: [UserController],
   exports: [UsersService],
