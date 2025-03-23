@@ -4,11 +4,8 @@ POST http://localhost:3000/users
 Content-Type: application:json
 
   {
-    "id": ,
-    "username": "",
-    "email": "",
-    "password":"",
-    "walletAddress": "",
-    "createdAt": "" ,
-    "updatedAt": ""
+    "username": "ahamdogo",
+    "email": "ahmadogo413@gmail.com",
+    "password":"Ahmad@413",
+    "walletAddress": "0x1234567890abcdef1234567890abcdef1234567890"
   }

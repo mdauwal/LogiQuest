@@ -16,6 +16,7 @@ import { DatabaseModule } from './database/database.module';
 import { validateConfig } from './config/config.validation';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { StarknetModule } from './starknet/starknet.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { APP_GUARD } from '@nestjs/core';
     AchievementsModule,
     AuthModule,
     ProgressModule,
+    StarknetModule,
     DatabaseModule, // ✅ Correctly placed inside imports array
   ],
   controllers: [AppController],
