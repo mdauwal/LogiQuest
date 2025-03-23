@@ -1,65 +1,73 @@
+"use client";
+
 import { useEffect } from "react";
-import GameButton from "../GameButton";
-import ModalLogo from "./ModalLogo";
+import GameButton from "../GameActionButton";
+import ModalGameIcon from "./ModalGameIcon";
+import Fiftyicon from "/src/assets/Fiftyicon.svg";
+import peopleicon from "/src/assets/peopleicon.svg";
 
 interface GameplayModalProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
-  score?: number;
+  promptText?: string;
+  GameScore?: number;
 }
 
 export default function GameplayModal({
   isOpen,
   onClose,
+  promptText = "Do you want to continue?",
   title = "Congratulation!",
-  score = 4500,
+  GameScore = 4500,
 }: GameplayModalProps) {
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
   }, [isOpen]);
-
-  if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-[#1B171799] backdrop-blur-sm z-50 p-4"
+      className={`fixed inset-0 flex items-center   justify-center bg-[#1B171799] h-full  z-50 
+      transition-opacity duration-300 ease-in-out 
+      ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
       onClick={onClose}
     >
-      {/* Modal Content */}
       <div
-        className="bg-[#01100F] rounded-[20px] w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl p-6 shadow-lg relative"
+        className={`bg-[#01100F] rounded-[20px] w-full max-w-xl p-6 shadow-xl relative 
+        transform transition-all duration-500 ease-in-out
+        ${
+          isOpen
+            ? "scale-100 translate-y-0 opacity-100"
+            : "scale-90 translate-y-10 opacity-0"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-[#048179] text-2xl md:text-3xl font-medium text-center tracking-widest">
+        {/* Title */}
+        <h3 className="text-[#048179] text-2xl md:text-3xl font-semibold text-center tracking-widest">
           {title}
         </h3>
 
-        {/* Score & Images */}
-        <div className="flex flex-col gap-4 justify-center items-center">
+        {/* Score and Icons */}
+        <div className="flex flex-col gap-3 justify-center items-center mt-4">
           <img
             src="/src/assets/goldbag.svg"
             alt="Gold Bag"
             className="w-40 md:w-52"
           />
           <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-t from-[#EE2B22] via-[#F9BC07] to-[#FDD405] text-transparent bg-clip-text">
-            {score}
+            {GameScore}
           </h1>
-          <div className="flex justify-center gap-2">
-            <ModalLogo />
-            <ModalLogo />
-            <ModalLogo />
+          <div className="flex justify-center gap-3">
+            <ModalGameIcon number="12700" />
+            <ModalGameIcon number="12000" icon={peopleicon} />
+            <ModalGameIcon number="10000" icon={Fiftyicon} />
           </div>
         </div>
 
-        {/* Action Buttons */}
+        {/* Modal Buttons */}
         <div className="flex flex-col mt-4 gap-3">
           <p className="text-[#CFFDED] text-base text-center font-prompt">
-            Do you want to continue?
+            {promptText}
           </p>
           <div className="flex flex-col gap-2 justify-center items-center">
             <GameButton
@@ -76,9 +84,9 @@ export default function GameplayModal({
             />
             <GameButton
               text="Exit"
-              href="/"
               borderColor="bg-[#CFFDED]"
               bgColor="bg-[#01100F]"
+              onClick={onClose}
             />
           </div>
         </div>
