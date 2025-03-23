@@ -6,11 +6,12 @@ export default function GamePlay() {
 
   return (
     <div>
+      {/* button to test the game modal, can be removed once the gameplay component is built */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md"
+        className="px-4 py-2 bg-[#01100F] text-white rounded-md"
       >
-        Open Modal
+        Open game modal
       </button>
 
       <GameplayModal
