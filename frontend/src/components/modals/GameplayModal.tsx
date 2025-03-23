@@ -27,13 +27,13 @@ export default function GameplayModal({
 
   return (
     <div
-      className={`fixed inset-0 flex items-center   justify-center bg-[#1B171799] h-full  z-50 
+      className={`fixed inset-0 flex items-center px-4    justify-center bg-[#1B171799] h-full  z-50 
       transition-opacity duration-300 ease-in-out 
       ${isOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}
       onClick={onClose}
     >
       <div
-        className={`bg-[#01100F] rounded-[20px] w-full max-w-xl p-6 shadow-xl relative 
+        className={`bg-[#01100F] rounded-[20px] w-full md:max-w-xl p-4 md:p-6 shadow-xl relative 
         transform transition-all duration-500 ease-in-out
         ${
           isOpen
@@ -43,21 +43,21 @@ export default function GameplayModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Title */}
-        <h3 className="text-[#048179] text-2xl md:text-3xl font-semibold text-center tracking-widest">
+        <h3 className="text-[#048179] text-xl md:text-4xl font-semibold text-center tracking-widest">
           {title}
         </h3>
 
         {/* Score and Icons */}
-        <div className="flex flex-col gap-3 justify-center items-center mt-4">
+        <div className="flex flex-col md:gap-3 justify-center items-center md:mt-4">
           <img
             src="/src/assets/goldbag.svg"
             alt="Gold Bag"
-            className="w-40 md:w-52"
+            className="w-28 sm:w-32 md:w-52"
           />
-          <h1 className="text-4xl md:text-5xl font-black bg-gradient-to-t from-[#EE2B22] via-[#F9BC07] to-[#FDD405] text-transparent bg-clip-text">
+          <h1 className="text-3xl md:text-5xl font-black bg-gradient-to-t from-[#EE2B22] via-[#F9BC07] to-[#FDD405] text-transparent bg-clip-text">
             {GameScore}
           </h1>
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center w-3/4 md:w-full gap-3">
             <ModalGameIcon number="12700" />
             <ModalGameIcon number="12000" icon={peopleicon} />
             <ModalGameIcon number="10000" icon={Fiftyicon} />
@@ -66,7 +66,7 @@ export default function GameplayModal({
 
         {/* Modal Buttons */}
         <div className="flex flex-col mt-4 gap-3">
-          <p className="text-[#CFFDED] text-base text-center font-prompt">
+          <p className="text-[#CFFDED] text-sm md:text-base text-center font-prompt">
             {promptText}
           </p>
           <div className="flex flex-col gap-2 justify-center items-center">

@@ -8,7 +8,7 @@ interface GameActionButtonProps {
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-const GameButton: React.FC<GameActionButtonProps> = ({
+const GameActionButton: React.FC<GameActionButtonProps> = ({
   text = "Button",
   href = "#",
   borderColor = "bg-blue-500",
@@ -31,16 +31,16 @@ const GameButton: React.FC<GameActionButtonProps> = ({
       ></div>
 
       <div
-        className={`absolute inset-0 m-0.5 ${bgColor} flex items-center justify-center font-prompt ${textColor} font-bold text-lg transition-all duration-200`}
+        className={`absolute inset-0 m-0.5 ${bgColor}  flex  items-center justify-center font-prompt ${textColor}  transition-all duration-200`}
         style={{
           clipPath:
             "polygon(12px 0%, calc(100% - 12px) 0%, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0% 50%)",
         }}
       >
-        {text}
+        <p className="font-bold text-sm md:text-lg"> {text}</p>
       </div>
     </a>
   );
 };
 
-export default GameButton;
+export default GameActionButton;

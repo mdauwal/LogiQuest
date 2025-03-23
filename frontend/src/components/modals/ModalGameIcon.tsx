@@ -16,7 +16,7 @@ const ModalGameIcon: React.FC<LogoProps> = ({
   centerText,
   primaryColor = "#EF441F",
   secondaryColor = "#FCCD06",
-  width = 88,
+  width = 85,
   height = 107,
 }) => {
   return (
