@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -18,6 +17,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { StarknetModule } from './starknet/starknet.module';
 
 @Module({
   imports: [
@@ -44,6 +44,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     AchievementsModule,
     AuthModule,
     ProgressModule,
+    StarknetModule,
     DatabaseModule, // ✅ Correctly placed inside imports array
     BlockchainModule,
     TransactionsModule,
