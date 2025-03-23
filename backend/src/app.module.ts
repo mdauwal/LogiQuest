@@ -18,6 +18,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { BlockchainModule } from './blockchain/blockchain.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { TransactionsModule } from './transactions/transactions.module';
     DatabaseModule, // ✅ Correctly placed inside imports array
     BlockchainModule,
     TransactionsModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [

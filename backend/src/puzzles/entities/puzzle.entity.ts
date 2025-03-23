@@ -1,7 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  Index,
+} from 'typeorm';
 import { Step } from '../../steps/entities/step.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
+export enum PuzzleDifficulty {
+  EASY = 'easy',
+  MEDIUM = 'medium',
+  HARD = 'hard',
+}
 @Entity()
 export class Puzzle {
   @PrimaryGeneratedColumn()
@@ -16,12 +27,23 @@ export class Puzzle {
   @ApiProperty({ description: 'A detailed description of the puzzle' })
   description: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: PuzzleDifficulty,
+    default: PuzzleDifficulty.EASY,
+  })
   @ApiProperty({
     description: 'The difficulty level of the puzzle',
-    example: 3,
+    example: PuzzleDifficulty.EASY,
   })
-  difficulty: number;
+  difficulty: PuzzleDifficulty;
+
+  @Column()
+  @ApiProperty({
+    description: 'The category of the puzzle',
+    example: 'sport',
+  })
+  category: string;
 
   @Column()
   @ApiProperty({
