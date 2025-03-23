@@ -28,7 +28,7 @@ const HeroSection = () => {
           </button>
         </div>
 
-        <div className="relative flex justify-center md:justify-end mt-10 md:mt-[-20px] md:mr-[-20px] w-full md:w-auto">
+        <div className="relative flex justify-center md:justify-end mt-10 md:mt-[-20px] md:mr-[-15px] w-full md:w-auto">
           <img
             src={MergedPeople}
             alt="Game Characters"
