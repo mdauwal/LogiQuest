@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -16,6 +15,8 @@ import { DatabaseModule } from './database/database.module';
 import { validateConfig } from './config/config.validation';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { BlockchainModule } from './blockchain/blockchain.module';
+import { TransactionsModule } from './transactions/transactions.module';
 import { StarknetModule } from './starknet/starknet.module';
 
 @Module({
@@ -28,10 +29,8 @@ import { StarknetModule } from './starknet/starknet.module';
       // envFilePath: '.env.development',
       envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       // validate: validateConfig, // Load environment variables
-      
     }),
 
-    
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -47,6 +46,8 @@ import { StarknetModule } from './starknet/starknet.module';
     ProgressModule,
     StarknetModule,
     DatabaseModule, // ✅ Correctly placed inside imports array
+    BlockchainModule,
+    TransactionsModule,
   ],
   controllers: [AppController],
   providers: [
