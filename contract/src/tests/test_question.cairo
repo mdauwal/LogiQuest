@@ -1,7 +1,3 @@
-use starknet::ContractAddress;
-use starknet::contract_address_const;
-use starknet::testing::set_contract_address;
-
 use super::super::types::{Option, Question};
 use super::super::utils::{validate_question, calculate_question_reward};
 
@@ -22,7 +18,7 @@ fn test_question_creation() {
         option_b: option_b,
         option_c: option_c,
         option_d: option_d,
-        correct_option_index: 0, // Option A is correct
+        correct_option_index: 0, 
     };
 
     assert(validate_question(question) == true, 'Question should be valid');
