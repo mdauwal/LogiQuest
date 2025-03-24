@@ -75,3 +75,22 @@ pub struct UserActivity {
     pub best_streak: u32,
     pub daily_activity: DailyActivityCounter,  // used for daily challenge mode
 }
+
+#[derive(Copy, Drop, Serde, starknet::Store)]
+pub struct Option {
+    pub label: felt252, 
+    pub text: felt252,
+    pub is_correct: bool,
+}
+
+#[derive(Copy, Drop, Serde, starknet::Store)]
+pub struct Question {
+    pub level: u32,
+    pub reward: u256, 
+    pub question_text: felt252,
+    pub option_a: Option, 
+    pub option_b: Option, 
+    pub option_c: Option, 
+    pub option_d: Option, 
+    pub correct_option_index: u8, 
+}
