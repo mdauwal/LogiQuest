@@ -46,6 +46,8 @@ export class CreatePuzzleDto {
         description: 'Add 2 to 2',
         order: 1,
         hints: ['2 + 2'],
+        options: ['2', '4', '0'],
+        correctAnswer: '4',
       },
     ],
   })

@@ -74,39 +74,53 @@ export class GameSession {
   })
   lastActive: Date;
 
-   // New fields
-   @Column()
-   @ApiProperty({
+  // New fields
+  @Column()
+  @ApiProperty({
     description: 'Number of attempts made in the session',
     example: 3,
   })
-   currentScore: number;
+  currentScore: number;
 
-   @Column('jsonb', { default: [] })
-   @ApiProperty({
+  @Column('jsonb', { default: [] })
+  @ApiProperty({
     description: 'Number of attempts made in the session',
     example: 3,
   })
-   answerHistory: AnswerRecord[];
+  answerHistory: AnswerRecord[];
 
-   @Column()
-   @ApiProperty({
+  @Column()
+  @ApiProperty({
     description: 'Number of attempts made in the session',
     example: 3,
   })
-   streakCount: number;
+  streakCount: number;
 
-   @Column({ default: false })
-   @ApiProperty({
+  @Column({ default: false })
+  @ApiProperty({
     description: 'Number of attempts made in the session',
     example: 3,
   })
-   isCompleted: boolean;
+  isCompleted: boolean;
 
-   @Column({ nullable: true })
-   @ApiProperty({
+  @Column({ nullable: true })
+  @ApiProperty({
     description: 'Number of attempts made in the session',
     example: 3,
   })
-   categoryId: string;
+  categoryId: string;
+
+  @Column({ default: false })
+  @ApiProperty({
+    description: 'Whether the 50/50 lifeline has been used',
+    example: false,
+  })
+  isFiftyFiftyUsed: boolean;
+
+  @Column({ default: false })
+  @ApiProperty({
+    description: 'Whether the Ask a Friend lifeline has been used',
+    example: false,
+  })
+  isAskFriendUsed: boolean;
 }
