@@ -2,34 +2,17 @@ use starknet::ContractAddress;
 use starknet::contract_address_const;
 use starknet::testing::set_contract_address;
 
-// Import the modules we are testing
 use super::super::types::{Option, Question};
 use super::super::utils::{validate_question, calculate_question_reward};
 
 #[test]
 fn test_question_creation() {
     // Create options for the question
-    let option_a = Option { 
-        label: 'A', 
-        text: 'First option', 
-        is_correct: true 
-    };
-    let option_b = Option { 
-        label: 'B', 
-        text: 'Second option', 
-        is_correct: false 
-    };
-    let option_c = Option { 
-        label: 'C', 
-        text: 'Third option', 
-        is_correct: false 
-    };
-    let option_d = Option { 
-        label: 'D', 
-        text: 'Fourth option', 
-        is_correct: false 
-    };
-    
+    let option_a = Option { label: 'A', text: 'First option', is_correct: true };
+    let option_b = Option { label: 'B', text: 'Second option', is_correct: false };
+    let option_c = Option { label: 'C', text: 'Third option', is_correct: false };
+    let option_d = Option { label: 'D', text: 'Fourth option', is_correct: false };
+
     // Create a question with level 1 (reward should be 500)
     let question = Question {
         level: 1,
@@ -39,13 +22,11 @@ fn test_question_creation() {
         option_b: option_b,
         option_c: option_c,
         option_d: option_d,
-        correct_option_index: 0,  // Option A is correct
+        correct_option_index: 0, // Option A is correct
     };
-    
-    // Validate the question
+
     assert(validate_question(question) == true, 'Question should be valid');
-    
-    // Check that the reward is calculated correctly (500 for level 1)
+
     assert(question.reward.low == 500_u128, 'Reward should be 500');
     assert(question.reward.high == 0_u128, 'High bits should be 0');
 }
@@ -57,7 +38,7 @@ fn test_question_validation_correct_option() {
     let option_b = Option { label: 'B', text: 'Option B', is_correct: true };
     let option_c = Option { label: 'C', text: 'Option C', is_correct: false };
     let option_d = Option { label: 'D', text: 'Option D', is_correct: false };
-    
+
     let question = Question {
         level: 2,
         reward: calculate_question_reward(2),
@@ -66,23 +47,22 @@ fn test_question_validation_correct_option() {
         option_b: option_b,
         option_c: option_c,
         option_d: option_d,
-        correct_option_index: 1,  // Option B is correct (index 1)
+        correct_option_index: 1,
     };
-    
+
     assert(validate_question(question) == true, 'Question should be valid');
-    
+
     // Reward for level 2 should be 1000
     assert(question.reward.low == 1000_u128, 'Reward should be 1000');
 }
 
 #[test]
 fn test_invalid_question_multiple_correct() {
-    // Create a question with multiple correct options
     let option_a = Option { label: 'A', text: 'Option A', is_correct: true };
-    let option_b = Option { label: 'B', text: 'Option B', is_correct: true }; // Invalid: two correct
+    let option_b = Option { label: 'B', text: 'Option B', is_correct: true };
     let option_c = Option { label: 'C', text: 'Option C', is_correct: false };
     let option_d = Option { label: 'D', text: 'Option D', is_correct: false };
-    
+
     let question = Question {
         level: 3,
         reward: calculate_question_reward(3),
@@ -91,10 +71,9 @@ fn test_invalid_question_multiple_correct() {
         option_b: option_b,
         option_c: option_c,
         option_d: option_d,
-        correct_option_index: 0,  // Indicates option A should be correct
+        correct_option_index: 0,
     };
-    
-    // Should be invalid because there are multiple correct options
+
     assert(validate_question(question) == false, 'Multiple correct should fail');
 }
 
@@ -105,7 +84,7 @@ fn test_invalid_question_index_mismatch() {
     let option_b = Option { label: 'B', text: 'Option B', is_correct: false };
     let option_c = Option { label: 'C', text: 'Option C', is_correct: false };
     let option_d = Option { label: 'D', text: 'Option D', is_correct: false };
-    
+
     let question = Question {
         level: 4,
         reward: calculate_question_reward(4),
@@ -114,10 +93,9 @@ fn test_invalid_question_index_mismatch() {
         option_b: option_b,
         option_c: option_c,
         option_d: option_d,
-        correct_option_index: 1,  // Indicates option B should be correct, but A is correct
+        correct_option_index: 1,
     };
-    
-    // Should be invalid because correct_option_index doesn't match is_correct flags
+
     assert(validate_question(question) == false, 'Index mismatch should fail');
 }
 
@@ -128,7 +106,7 @@ fn test_invalid_question_out_of_range_index() {
     let option_b = Option { label: 'B', text: 'Option B', is_correct: false };
     let option_c = Option { label: 'C', text: 'Option C', is_correct: false };
     let option_d = Option { label: 'D', text: 'Option D', is_correct: false };
-    
+
     let question = Question {
         level: 5,
         reward: calculate_question_reward(5),
@@ -137,10 +115,9 @@ fn test_invalid_question_out_of_range_index() {
         option_b: option_b,
         option_c: option_c,
         option_d: option_d,
-        correct_option_index: 4,  // Invalid: index must be 0-3
+        correct_option_index: 4,
     };
-    
-    // Should be invalid because correct_option_index is out of range
+
     assert(validate_question(question) == false, 'Out of range should fail');
 }
 
@@ -150,7 +127,7 @@ fn test_reward_calculations() {
     let reward_level_1 = calculate_question_reward(1);
     let reward_level_5 = calculate_question_reward(5);
     let reward_level_10 = calculate_question_reward(10);
-    
+
     assert(reward_level_1.low == 500_u128, 'Level 1 reward should be 500');
     assert(reward_level_5.low == 2500_u128, 'Level 5 reward should be 2500');
     assert(reward_level_10.low == 5000_u128, 'Level 10 reward should be 5000');
