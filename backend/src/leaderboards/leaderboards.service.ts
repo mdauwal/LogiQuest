@@ -1,170 +1,102 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThanOrEqual } from 'typeorm';
-import { QuizResult } from './entities/quiz-result.entity';
-import { User } from 'src/users/entities/user.entity'; // adapt to your user entity
-import * as moment from 'moment';
+import { Repository } from 'typeorm';
+import { Score } from './entities/score.entity';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class LeaderboardsService {
   constructor(
-    @InjectRepository(QuizResult)
-    private readonly quizResultRepo: Repository<QuizResult>,
+    @InjectRepository(Score)
+    private readonly scoreRepository: Repository<Score>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
-  /**
-   * Returns aggregated leaderboard data.
-   * @param category optional quiz category filter
-   * @param period "all-time" | "monthly" | "weekly"
-   * @param page pagination page
-   * @param limit number of items per page
-   */
+  private getStartDateForPeriod(period: string): Date | null {
+    if (!period || period === 'all-time') {
+      return null;
+    }
+    const now = new Date();
+    switch (period) {
+      case 'monthly':
+        return new Date(now.getFullYear(), now.getMonth(), 1);
+      case 'weekly':
+        const dayOfWeek = now.getDay();
+        const diff = now.getDate() - dayOfWeek;
+        return new Date(now.getFullYear(), now.getMonth(), diff);
+      default:
+        return null;
+    }
+  }
+
   async getLeaderboard(
-    category?: string,
-    period: string = 'all-time',
-    page: number = 1,
-    limit: number = 10,
+    category: string | undefined,
+    period: string,
+    page: number,
+    limit: number,
   ) {
-    const where: any = {};
+    const startDate = this.getStartDateForPeriod(period);
+    let qb = this.scoreRepository
+      .createQueryBuilder('score')
+      .select('score.userId', 'userId')
+      .addSelect('user.username', 'username')
+      .addSelect('SUM(score.score)', 'totalScore')
+      .leftJoin('score.user', 'user')
+      .groupBy('score.userId')
+      .addGroupBy('user.username')
+      .orderBy('totalScore', 'DESC');
     if (category) {
-      where.category = category;
+      qb = qb.where('score.category = :category', { category });
     }
-
-    // Time period filter
-    if (period === 'weekly') {
-      const startOfWeek = moment().startOf('isoWeek').toDate();
-      where.createdAt = MoreThanOrEqual(startOfWeek);
-    } else if (period === 'monthly') {
-      const startOfMonth = moment().startOf('month').toDate();
-      where.createdAt = MoreThanOrEqual(startOfMonth);
+    if (startDate) {
+      qb = qb.andWhere('score.createdAt >= :startDate', { startDate });
     }
-    // "all-time" => no date filter
-
-    // Query for aggregated scores
-    // TypeORM raw query approach:
-    const [rows, total] = await this.quizResultRepo
-      .createQueryBuilder('qr')
-      .select('qr.userId', 'userId')
-      .addSelect('SUM(qr.score)', 'totalScore')
-      .where(where)
-      .groupBy('qr.userId')
-      .orderBy('SUM(qr.score)', 'DESC')
-      .offset((page - 1) * limit)
-      .limit(limit)
-      .getRawAndEntities();
-
-    const leaderboard = rows.map((row, index) => ({
-      userId: row.userId,
-      totalScore: parseInt(row.totalScore, 10),
-      rank: (page - 1) * limit + (index + 1),
-    }));
-
-    return {
-      data: leaderboard,
-      meta: {
-        total,
-        page,
-        limit,
-        totalPages: Math.ceil(total / limit),
-      },
-    };
+    qb = qb.skip((page - 1) * limit).take(limit);
+    return qb.getRawMany();
   }
 
-  /**
-   * Returns the ranking of the currently authenticated user.
-   */
-  async getUserRank(user: User, category?: string, period: string = 'all-time') {
-    const userTotalScore = await this.getUserTotalScore(user, category, period);
-
-    // If user has no score, rank is null (or last place)
-    if (!userTotalScore) {
-      return { rank: null, totalScore: 0 };
+  async getUserRank(user: User, category: string, period: string) {
+    const startDate = this.getStartDateForPeriod(period);
+    let userScoreQb = this.scoreRepository
+      .createQueryBuilder('score')
+      .select('SUM(score.score)', 'userTotalScore')
+      .where('score.userId = :userId', { userId: user.id });
+    if (category) {
+      userScoreQb = userScoreQb.andWhere('score.category = :category', { category });
     }
+    if (startDate) {
+      userScoreQb = userScoreQb.andWhere('score.createdAt >= :startDate', { startDate });
+    }
+    const userScoreResult = await userScoreQb.getRawOne<{ userTotalScore: number }>();
+    const userTotalScore = userScoreResult?.userTotalScore || 0;
+    if (userTotalScore === 0) {
+      return { userTotalScore, rank: null };
+    }
+    let rankQb = this.scoreRepository
+      .createQueryBuilder('score')
+      .select('score.userId', 'userId')
+      .addSelect('SUM(score.score)', 'totalScore')
+      .groupBy('score.userId')
+      .orderBy('totalScore', 'DESC');
+    if (category) {
+      rankQb = rankQb.where('score.category = :category', { category });
+    }
+    if (startDate) {
+      rankQb = rankQb.andWhere('score.createdAt >= :startDate', { startDate });
+    }
+    const allResults = await rankQb.getRawMany<{ userId: number; totalScore: number }>();
+    allResults.sort((a, b) => b.totalScore - a.totalScore);
+    const rank = allResults.findIndex((r) => r.userId === user.id) + 1;
+    return { userTotalScore, rank };
+  }
 
-    const countHigher = await this.countUsersWithHigherScore(
-      userTotalScore,
+  async recordQuizScore(userId: number, category: string, points: number) {
+    const score = this.scoreRepository.create({
+      user: { id: userId },
       category,
-      period,
-    );
-
-    return {
-      rank: countHigher + 1,
-      totalScore: userTotalScore,
-    };
-  }
-
-  private async getUserTotalScore(
-    user: User,
-    category?: string,
-    period?: string,
-  ): Promise<number> {
-    const where: any = { user: { id: user.id } };
-    if (category) {
-      where.category = category;
-    }
-
-    if (period === 'weekly') {
-      const startOfWeek = moment().startOf('isoWeek').toDate();
-      where.createdAt = MoreThanOrEqual(startOfWeek);
-    } else if (period === 'monthly') {
-      const startOfMonth = moment().startOf('month').toDate();
-      where.createdAt = MoreThanOrEqual(startOfMonth);
-    }
-
-    const { sum } = await this.quizResultRepo
-      .createQueryBuilder('qr')
-      .select('SUM(qr.score)', 'sum')
-      .where(where)
-      .getRawOne();
-
-    return sum ? parseInt(sum, 10) : 0;
-  }
-
-  private async countUsersWithHigherScore(
-    userScore: number,
-    category?: string,
-    period?: string,
-  ): Promise<number> {
-    const where: any = {};
-    if (category) {
-      where.category = category;
-    }
-
-    if (period === 'weekly') {
-      const startOfWeek = moment().startOf('isoWeek').toDate();
-      where.createdAt = MoreThanOrEqual(startOfWeek);
-    } else if (period === 'monthly') {
-      const startOfMonth = moment().startOf('month').toDate();
-      where.createdAt = MoreThanOrEqual(startOfMonth);
-    }
-
-    const qb = this.quizResultRepo
-      .createQueryBuilder('qr')
-      .select('qr.userId', 'userId')
-      .addSelect('SUM(qr.score)', 'totalScore')
-      .where(where)
-      .groupBy('qr.userId')
-      .having('SUM(qr.score) > :userScore', { userScore });
-
-    const raw = await qb.getRawMany();
-    return raw.length;
-  }
-
-  /**
-   * Called after a quiz is completed to update the leaderboard in real-time.
-   * Insert a new record in the DB or update an existing record, etc.
-   */
-  async updateLeaderboardOnQuizCompletion(
-    userId: number,
-    category: string,
-    score: number,
-  ) {
-    const newResult = this.quizResultRepo.create({
-      user: { id: userId } as User,
-      category,
-      score,
+      score: points,
     });
-    await this.quizResultRepo.save(newResult);
-    // Optionally update cache, broadcast events, etc.
+    return this.scoreRepository.save(score);
   }
 }

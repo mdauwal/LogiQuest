@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LeaderboardsController } from './leaderboards.controller';
 import { LeaderboardsService } from './leaderboards.service';
-import { QuizResult } from './entities/quiz-result.entity';
+import { LeaderboardsController } from './leaderboards.controller';
+import { Score } from './entities/score.entity';
+import { User } from '../users/entities/user.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([QuizResult]),
-  ],
+  imports: [TypeOrmModule.forFeature([Score, User])],
   controllers: [LeaderboardsController],
   providers: [LeaderboardsService],
   exports: [LeaderboardsService],
