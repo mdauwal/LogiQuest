@@ -19,6 +19,7 @@ import { BlockchainModule } from './blockchain/blockchain.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CategoryModule } from './category/category.module';
 import { StarknetModule } from './starknet/starknet.module';
+import { LifelineModule } from './lifeline/lifeline.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { StarknetModule } from './starknet/starknet.module';
     DatabaseModule, // ✅ Correctly placed inside imports array
     BlockchainModule,
     TransactionsModule,
+    LifelineModule,
     CategoryModule,
   ],
   controllers: [AppController],
