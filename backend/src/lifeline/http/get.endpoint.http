@@ -1,0 +1,5 @@
+# Check available lifelines
+GET http://localhost:3000/game-sessions/1/lifelines
+
+# Verify lifeline was marked as used
+GET http://localhost:3000/game-sessions/1/lifelines
