@@ -6,10 +6,13 @@ import {
   IsArray,
   ValidateNested,
   ArrayMinSize,
+  IsEnum,
+  IsOptional,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { CreateStepDto } from 'src/steps/dto/create-step.dto';
+import { CreateStepDto } from '../../steps/dto/create-step.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { PuzzleDifficulty } from '../entities/puzzle.entity';
 
 export class CreatePuzzleDto {
   @ApiProperty({
@@ -29,23 +32,48 @@ export class CreatePuzzleDto {
   description: string;
 
   @ApiProperty({
+    enum: PuzzleDifficulty,
+    description: 'The difficulty level of the puzzle',
+    example: PuzzleDifficulty.EASY,
+  })
+  @IsEnum(PuzzleDifficulty)
+  difficulty: PuzzleDifficulty;
+
+  @ApiProperty({
+    type: 'string',
+    description: 'The category of the puzzle',
+    example: 'math',
+  })
+  @IsString()
+  category: string;
+
+  @ApiProperty({
     type: 'number',
-    description: 'The puzzle difficulty (1-5)',
-    example: 3,
+    description: 'The points awarded for completing the puzzle',
+    example: 100,
   })
   @IsNumber()
-  @Min(1)
-  @Max(5)
-  difficulty: number;
+  @Min(0)
+  points: number;
+
+  // @ApiProperty({
+  //   type: 'object',
+  //   description: 'Additional information related to the puzzle',
+  //   example: { type: 'image', url: 'https://example.com/puzzle-image.jpg' },
+  // })
+  @IsOptional()
+  metadata?: Record<string, any>;
 
   @ApiProperty({
     type: 'array',
     description: 'The puzzle steps',
     example: [
       {
-        description: 'Add 2 to 2',
+        description: 'Solve this math: 2 + 2',
         order: 1,
-        hints: ['2 + 2'],
+        hints: ['Add 2 to 2'],
+        options: ['4', '5', '4'],
+        correctAnswer: '4',
       },
     ],
   })

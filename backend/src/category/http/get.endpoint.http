@@ -1,0 +1,11 @@
+# Get all available categories
+GET http://localhost:3000/categories
+
+# Get puzzles from a specific category
+GET http://localhost:3000/categories/math/puzzles
+
+# Get category statistics
+GET http://localhost:3000/categories/statistics
+
+# Get puzzles by category and difficulty
+GET http://localhost:3000/categories/math/puzzles?difficulty=easy

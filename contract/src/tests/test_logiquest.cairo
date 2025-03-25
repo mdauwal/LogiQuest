@@ -369,3 +369,61 @@ fn test_daily_validation() {
             1, // day
         );
 }
+
+#[test]
+#[should_panic(expected: ('Invalid number of options',))]
+fn test_set_question_options_incorrect_len() {
+    let contract_address = deploy_contract();
+    let dispatcher = ILogiQuestDispatcher { contract_address };
+
+    dispatcher.initialize_game_modes(2);
+
+    // Try to get an invalid game mode (there are only 8 modes, from 0 to 7)
+    let options = array!['test option'];
+    dispatcher.set_question_options(options.span(), 'test_answer', false);
+}
+
+#[test]
+#[should_panic(expected: ('Duplicate options',))]
+fn test_set_question_options_duplicate_options() {
+    let contract_address = deploy_contract();
+    let dispatcher = ILogiQuestDispatcher { contract_address };
+
+    dispatcher.initialize_game_modes(2);
+
+    // Try to get an invalid game mode (there are only 8 modes, from 0 to 7)
+    let options = array!['test option', 'test option', 'another option', 'option 4'];
+    dispatcher.set_question_options(options.span(), 'test_answer', false);
+}
+
+#[test]
+#[should_panic(expected: ('Answer not in options',))]
+fn test_set_question_options_missing_correct_option() {
+    let contract_address = deploy_contract();
+    let dispatcher = ILogiQuestDispatcher { contract_address };
+
+    dispatcher.initialize_game_modes(2);
+
+    // Try to get an invalid game mode (there are only 8 modes, from 0 to 7)
+    let options = array!['test option', 'test option 2', 'another option', 'option 4'];
+    dispatcher.set_question_options(options.span(), 'test_answer', false);
+}
+
+#[test]
+fn test_set_question_options() {
+    let contract_address = deploy_contract();
+    let dispatcher = ILogiQuestDispatcher { contract_address };
+
+    dispatcher.initialize_game_modes(2);
+
+    // Try to get an invalid game mode (there are only 8 modes, from 0 to 7)
+    let options = array!['test option', 'test option 2', 'another option', 'option 4'];
+    let new_questions = dispatcher.set_question_options(options.span(), 'test option', true);
+    
+    // Check that questions order was shuffled
+    assert(*new_questions.at(0) != *options.at(0), 'Same option in 0');
+    assert(*new_questions.at(1) != *options.at(1), 'Same option in 1');
+    assert(*new_questions.at(3) != *options.at(3), 'Same option in 3');
+    // option 2 remains in the same position
+    assert(*new_questions.at(2) == *options.at(2), 'Same option in 2');
+}
