@@ -31,10 +31,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Home />
             },
-            {
-                path: "signin",
-                element: <SignIn />
-            },
             // {
             //     element: <PrivateRoutes />,
             //     children: [

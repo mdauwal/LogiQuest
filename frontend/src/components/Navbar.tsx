@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { signOut } from "../services/GoogleAuthService";
+import { signOut } from "../services/auth/GoogleAuthService";
 
 const navItems = [
   { label: 'Game Modes', href: '/game-modes' },
@@ -65,7 +65,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Link
-                to="/signin"
+                to="/sign-in"
                 className="text-white hover:text-gray-300 font-medium text-xl transition-colors"
               >
                 Sign In
