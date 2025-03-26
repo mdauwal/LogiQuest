@@ -9,15 +9,17 @@ const Home = () => {
   return (
     <>
       {/* paste your page component below here */}
+
        
 
         <Navbar />
         <HeroSection />
-         <HowToPlay />
+        <HowToPlay />
         <WhyShouldYouPlaySection />
         <FaqsSection/>
         <AboutUsSection />
         <Footer />
+
       {/* paste your page component above here */}
     </>
   );
