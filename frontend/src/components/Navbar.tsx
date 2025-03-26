@@ -4,10 +4,10 @@ import useAuth from "../hooks/useAuth";
 import { signOut } from "../services/GoogleAuthService";
 
 const navItems = [
-  { label: "How To Play", href: "/how-to-play" },
-  { label: "Game Modes", href: "/game-modes" },
-  { label: "FAQs", href: "/faqs" },
-  { label: "About Us", href: "/about" },
+  { label: 'Game Modes', href: '/game-modes' },
+  { label: 'How To Play', href: '/how-to-play' },
+  { label: 'About Us', href: '/about' },
+  { label: 'FAQs', href: '/faqs' },
 ] as const;
 
 export default function Navbar() {

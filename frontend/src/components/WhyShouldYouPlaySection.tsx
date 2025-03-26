@@ -1,31 +1,53 @@
-const WhyShouldYouPlaySection = () => {
+
+export default function WhyShouldYouPlaySection() {
   return (
-    <section className="bg-brand-primary-green w-full pt-[5%] md:pb-0 pb-16">
-      <div className="flex flex-col md:flex-row w-[90%]  gap-8 justify-center  pt-8  mx-auto">
-        <div className="md:w-[845px] w-[450px]  top-[236px] md:left-[-211px] h-">
-          <img src="/whychoseus.png" />
+    <main className="min-h-screen bg-[#0a3b3b]">
+      <section className="container mx-auto py-12 pr-4 md:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div className="relative -ml-2">
+            <div className="relative overflow-hidden rounded-tr-[100px]  ">
+              <div className="absolute inset-0 border-r-4 border-t-4 border-[#ff5533] rounded-tr-[100px]"></div>
+              <div className=" ">
+                <img
+                  src="/playImg.png"
+                  alt=""
+                  className="object-left]"
+                />
+              </div>
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-yellow-400 to-orange-500"></div>
+            </div>
+          </div>
 
+          {/* Benefits Section */}
+          <div className="text-white space-y-8 px-4 md:px-8">
+            <h2 className="text-xl lg:text-2xl font-bold">Why Should You Play?</h2>
+
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-lg lg:text-xl font-semibold mb-3">Learning Opportunities</h3>
+                <p className="text-base lg:text-md">
+                  Incorporate games and challenges that promote learning in various subjects, enhancing users' knowledge
+                  while they play. Design activities that target specific skills, such as problem- solving, critical
+                  thinking, and creativity.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg lg:text-xl font-semibold mb-3">Cognitive Benefits</h3>
+                <p className="text-base lg:text-md">
+                  Brain Training Games: Offer puzzles and games that are scientifically designed to improve memory,
+                  attention, and cognitive function.
+                </p>
+                <p className="text-base lg:text-md mt-4">
+                  Progress Tracking: Allow users to track their improvement over time, reinforcing their learning
+                  journey and encouraging continuous engagement.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="md:w-[875px] mx-auto  space-y-4 md:space-y-8 md:mr-20">
-          <h1 className="font-prompt font-[500] text-xl text-left">Why should you play?</h1>
-          <ul className="text-left space-y-8 list-disc pl-5">
-            <li className="text-md font-prompt font-[500]  " >Learn While You Play: <br></br>
-              <span className="text-sm font-prompt font-[300] text-gray-300"> Enhance your knowledge in various subjects, from history to science and pop culture.
-              </span>
-            </li>
-            <li className="text-md font-prompt font-[500] ">Compete with Friends: <br></br>
-              <span className="text-sm font-prompt font-[300] text-gray-300 "> Invite friends to join you in Multiplayer mode and see who can achieve the highest score!</span>
-            </li>
-            <li className="text-md font-prompt font-[500] ">Flexible Play Options: <br></br>
-              <span className="text-sm font-prompt text-gray-300"> Whether you want to practice at your own pace or compete against others, LogiQuest has a mode for you.</span>
-            </li>
+      </section>
+    </main>
+  )
+}
 
-          </ul>
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-export default WhyShouldYouPlaySection;
