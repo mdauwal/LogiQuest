@@ -1,3 +1,4 @@
+import { GameSession } from 'src/game-sessions/entities/game-session.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -33,4 +34,7 @@ export class User {
 
   @OneToMany(() => Score, (score) => score.user)
   scores: Score[];
+
+  @OneToMany(() => GameSession, (gameSession) => gameSession.user)
+  gameSessions?: GameSession[];
 }

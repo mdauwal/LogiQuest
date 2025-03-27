@@ -22,11 +22,15 @@ import { StarknetModule } from './starknet/starknet.module';
 import { LeaderboardsModule } from './leaderboards/leaderboards.module';
 import { LifelineModule } from './lifeline/lifeline.module';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      // Set the correct path for your environment file if needed
+      envFilePath: '.env.development',
+      // envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      // validate: validateConfig, // Load environment variables
     }),
     ThrottlerModule.forRoot([
       {
