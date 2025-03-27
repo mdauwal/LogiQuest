@@ -1,32 +1,41 @@
-import { createBrowserRouter, Outlet } from "react-router-dom"
-import Layout from "../layout/Layout"
-import NotFound from "../pages/NotFound"
-import UnauthorizedResource from "../pages/UnauthorizedResource"
-import Home from '../pages/Home'
-import GameModesPage from '../pages/GameModesPage' 
+import { createBrowserRouter, Outlet } from "react-router-dom";
+import Layout from "../layout/Layout";
+import NotFound from "../pages/NotFound";
+import UnauthorizedResource from "../pages/UnauthorizedResource";
+import Home from "../pages/Home";
+import GameModesPage from "../pages/GameModesPage";
+import Login from "../pages/Login";
 
 const router = createBrowserRouter([
   {
-    path: '/*',
-    element: <NotFound />
+    path: "/*",
+    element: <NotFound />,
   },
   {
-    path: '/unauthorized',
-    element: <UnauthorizedResource />
+    path: "/unauthorized",
+    element: <UnauthorizedResource />,
   },
   {
-    path: '/',
-    element: <Layout><Outlet /></Layout>,
+    path: "/sign-in",
+    element: <Login />,
+  },
+  {
+    path: "/",
+    element: (
+      <Layout>
+        <Outlet />
+      </Layout>
+    ),
     children: [
       {
         index: true,
-        element: <Home />
+        element: <Home />,
       },
       {
-        path: 'game-modes', 
-        element: <GameModesPage />
+        path: "game-modes",
+        element: <GameModesPage />,
       },
-    ]
+    ],
   },
 ]);
 
