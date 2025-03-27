@@ -10,15 +10,13 @@ const Home = () => {
   return (
     <>
       {/* paste your page component below here */}
-       
-
-        <Navbar />
-        <HeroSection />
-         <WhyShouldYouPlaySection />
-        <FaqsSection/>
-        <AboutUsSection />
+      <Navbar />
+      <HeroSection />
+      <WhyShouldYouPlaySection />
+      <AboutUsSection />
+      <FaqsSection />
         <AccountSettings />
-        <Footer />
+      <Footer />
       {/* paste your page component above here */}
     </>
   );

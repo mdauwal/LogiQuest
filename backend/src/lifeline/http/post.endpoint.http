@@ -1,0 +1,15 @@
+# Use 50/50 lifeline
+POST http://localhost:3000/game-sessions/1/lifelines/fifty-fifty
+Content-Type: application/json
+
+{
+  "questionId": 1
+}
+
+# Use hint lifeline
+POST http://localhost:3000/game-sessions/1/lifelines/hint
+Content-Type: application/json
+
+{
+  "questionId": 1
+}
