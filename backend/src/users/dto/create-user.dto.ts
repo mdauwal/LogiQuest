@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsOptional, IsObject, IsNumber, IsUUID } from 'class-validator';
+import { IsString, IsEmail, IsOptional, IsObject, IsNumber, IsUUID, IsArray } from 'class-validator';
+import { GameSession } from 'src/game-sessions/entities/game-session.entity';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -45,4 +46,11 @@ export class CreateUserDto {
     avatarUrl?: string;
     bio?: string;
   };
+  @ApiProperty({
+    example: '0x1234567890abcdef1234567890abcdef1234567890',
+    description: 'The game session',
+  })
+  @IsArray()
+  @IsOptional()
+  gameSessions?: GameSession[];
 }

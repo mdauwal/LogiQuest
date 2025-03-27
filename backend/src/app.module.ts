@@ -22,6 +22,7 @@ import { StarknetModule } from './starknet/starknet.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { LifelineModule } from './lifeline/lifeline.module';
 
+
 @Module({
   imports: [
     // Load environment variables from .env
@@ -29,8 +30,8 @@ import { LifelineModule } from './lifeline/lifeline.module';
       isGlobal: true,
 
       // Set the correct path for your environment file if needed
-      // envFilePath: '.env.development',
-      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+      envFilePath: '.env.development',
+      // envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       // validate: validateConfig, // Load environment variables
     }),
 
