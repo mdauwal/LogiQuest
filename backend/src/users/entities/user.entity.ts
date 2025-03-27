@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
+import { Score } from '../../leaderboards/entities/score.entity';
 
 @Entity()
 export class User {
@@ -68,6 +69,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt?: Date;
+
+  @OneToMany(() => Score, (score) => score.user)
+  scores: Score[];
 
   @OneToMany(() => GameSession, (gameSession) => gameSession.user)
   gameSessions?: GameSession[];
