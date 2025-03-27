@@ -1,4 +1,5 @@
 import FaqsSection from "../components/FaqsSection";
+import HowToPlay from "../components/HowToPlay";
 import Footer from "../components/Footer";
 import AboutUsSection from "../components/AboutUsSection";
 import WhyShouldYouPlaySection from "../components/WhyShouldYouPlaySection";
@@ -8,12 +9,17 @@ const Home = () => {
   return (
     <>
       {/* paste your page component below here */}
-      <Navbar />
-      <HeroSection />
-      <WhyShouldYouPlaySection />
-      <AboutUsSection />
-      <FaqsSection />
-      <Footer />
+
+       
+
+        <Navbar />
+        <HeroSection />
+        <HowToPlay />
+        <WhyShouldYouPlaySection />
+        <FaqsSection/>
+        <AboutUsSection />
+        <Footer />
+
       {/* paste your page component above here */}
     </>
   );
