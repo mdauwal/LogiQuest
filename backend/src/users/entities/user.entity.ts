@@ -7,6 +7,8 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
+import { Score } from '../../leaderboards/entities/score.entity';
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -19,7 +21,7 @@ export class User {
   email: string;
 
   @Column()
-  password: string; // hashed
+  password: string;
 
   @Column({ nullable: true })
   walletAddress: string;
@@ -29,6 +31,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => Score, (score) => score.user)
+  scores: Score[];
 
   @OneToMany(() => GameSession, (gameSession) => gameSession.user)
   gameSessions?: GameSession[];
