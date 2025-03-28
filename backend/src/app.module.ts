@@ -19,6 +19,7 @@ import { BlockchainModule } from './blockchain/blockchain.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { CategoryModule } from './category/category.module';
 import { StarknetModule } from './starknet/starknet.module';
+import { StatisticsModule } from './statistics/statistics.module';
 import { LeaderboardsModule } from './leaderboards/leaderboards.module';
 import { LifelineModule } from './lifeline/lifeline.module';
 
@@ -50,6 +51,7 @@ import { LifelineModule } from './lifeline/lifeline.module';
     BlockchainModule,
     TransactionsModule,
     CategoryModule,
+    StatisticsModule,
     LeaderboardsModule,
     LifelineModule,
   ],
