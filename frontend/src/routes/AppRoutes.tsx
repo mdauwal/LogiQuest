@@ -7,36 +7,36 @@ import GameModesPage from "../pages/GameModesPage";
 import Login from "../pages/Login";
 
 const router = createBrowserRouter([
-  {
-    path: "/*",
-    element: <NotFound />,
-  },
-  {
-    path: "/unauthorized",
-    element: <UnauthorizedResource />,
-  },
-  {
-    path: "/sign-in",
-    element: <Login />,
-  },
-  {
-    path: "/",
-    element: (
-      <Layout>
-        <Outlet />
-      </Layout>
-    ),
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "game-modes",
-        element: <GameModesPage />,
-      },
-    ],
-  },
+    {
+        path: "/*",
+        element: <NotFound />,
+    },
+    {
+        path: "/unauthorized",
+        element: <UnauthorizedResource />,
+    },
+    {
+        path: "/sign-in",
+        element: <Login />,
+    },
+    {
+        path: "/",
+        element: (
+            <Layout>
+                <Outlet />
+            </Layout>
+        ),
+        children: [
+            {
+                index: true,
+                element: <Home />,
+            },
+            {
+                path: "get-started",
+                element: <GameModesPage />,
+            },
+        ],
+    },
 ]);
 
 export default router;
