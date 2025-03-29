@@ -63,19 +63,11 @@ const LeaderboardPage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-slate-800 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         
         <Leaderboard players={players} />
         
-        {/* Alternative styling example */}
-        <div className="mt-8">
-          <Leaderboard 
-            players={players.slice(0, 5)} 
-            title="Top 5 Players" 
-            className="border-2 border-indigo-200"
-          />
-        </div>
       </div>
     </div>
   );
