@@ -48,7 +48,9 @@
     "rxjs": "^7.8.1",
     "starknet": "^6.23.1",
     "swagger-ui-express": "^5.0.1",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "helmet": "^7.1.0",
+    "rate-limiter-flexible": "^2.3.10"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

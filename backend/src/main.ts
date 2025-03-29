@@ -3,11 +3,21 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import helmet from 'helmet';
+import { SecurityMiddleware } from './security/ecurity.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+
   // Global validation pipe
+  // Security headers
+  app.use(helmet());
+
+  // Security middleware
+  app.use(SecurityMiddleware);
+
+  // Existing configurations
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -15,7 +25,6 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
-
   // Global exception filter
   app.useGlobalFilters(new AllExceptionsFilter());
 

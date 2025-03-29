@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,7 +11,6 @@ import { AchievementsModule } from './achievements/achievements.module';
 import { AuthModule } from './auth/auth.module';
 import { ProgressModule } from './progress/progress.module';
 import { DatabaseModule } from './database/database.module';
-import { validateConfig } from './config/config.validation';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { BlockchainModule } from './blockchain/blockchain.module';
@@ -22,7 +20,8 @@ import { StarknetModule } from './starknet/starknet.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { LeaderboardsModule } from './leaderboards/leaderboards.module';
 import { LifelineModule } from './lifeline/lifeline.module';
-
+import { OfflineQuizModule } from './offline-quiz/offline-quiz.module';
+import { SecurityModule } from './security/security.module';
 
 @Module({
   imports: [
@@ -54,6 +53,8 @@ import { LifelineModule } from './lifeline/lifeline.module';
     StatisticsModule,
     LeaderboardsModule,
     LifelineModule,
+    OfflineQuizModule,
+    SecurityModule,
   ],
   controllers: [AppController],
   providers: [
