@@ -58,6 +58,7 @@ export class UsersService {
       ...createUserDto,
       walletAddress: createUserDto.walletAddress || '',
       totalScore: 0,
+      scores: [], // Add the missing 'scores' property with a default empty array
       profileCustomization: {
         theme: createUserDto.profileCustomization?.theme || 'system',
         avatarUrl: createUserDto.profileCustomization?.avatarUrl || '',
