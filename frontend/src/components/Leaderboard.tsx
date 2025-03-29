@@ -23,9 +23,9 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
   const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
 
   return (
-    <div className={`max-w-md mx-auto bg-slate-800 rounded-lg shadow-md overflow-hidden ${className}`}>
+    <div className={`max-w-md mx-auto bg-gray-900 rounded-lg shadow-md overflow-hidden ${className}`}>
       {/* Header section with tight padding */}
-      <div className="bg-slate-800 px-4 pt-3 pb-4 -mt-1 -mx-1">
+      <div className="bg-gray-900 px-4 pt-3 pb-4 -mt-1 -mx-1">
         <h4 className="text-white uppercase underline text-left">{title}</h4>
       </div>
   
