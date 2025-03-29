@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
-import { User as CurrentUser } from '../auth/common/decorator/get-user.decorator';
+import { ReqUser as CurrentUser } from '../auth/common/decorator/get-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { ProfileResponseDto } from '../users/dto/profile-response.dto';
 import { StatisticsResponseDto } from '../users/dto/statistics-response.dto';
