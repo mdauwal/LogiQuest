@@ -51,7 +51,7 @@ export class GameSession {
 
   @Column({ default: 0 })
   @ApiProperty({
-    description: "Number of attempts made in the session",
+    description: "Total number of attempts made in the session",
     example: 3,
   })
   attempts: number;
@@ -87,21 +87,21 @@ export class GameSession {
 
   @Column({ default: 0 })
   @ApiProperty({
-    description: "Current streak of correct answers",
+    description: "Current streak of consecutive correct answers",
     example: 3,
   })
   streakCount: number;
 
   @Column({ default: false })
   @ApiProperty({
-    description: "Whether the quiz session is completed",
+    description: "Indicates whether the quiz session is completed",
     example: false,
   })
   isCompleted: boolean;
 
   @Column({ nullable: true })
   @ApiProperty({
-    description: "The category ID for the quiz",
+    description: "The category ID for the quiz session",
     example: "science",
   })
   categoryId: string;
@@ -109,35 +109,35 @@ export class GameSession {
   // Lifeline tracking fields
   @Column({ default: false })
   @ApiProperty({
-    description: "Whether the 50/50 lifeline has been used",
+    description: "Indicates whether the 50/50 lifeline has been used",
     example: false,
   })
   isFiftyFiftyUsed: boolean;
 
   @Column({ default: false })
   @ApiProperty({
-    description: "Whether the Ask a Friend lifeline has been used",
+    description: "Indicates whether the Ask a Friend lifeline has been used",
     example: false,
   })
   isAskFriendUsed: boolean;
 
   @Column({ default: false })
   @ApiProperty({
-    description: "Whether the Audience Poll lifeline has been used",
+    description: "Indicates whether the Audience Poll lifeline has been used",
     example: false,
   })
   isAudiencePollUsed: boolean;
 
   @Column({ default: 0 })
   @ApiProperty({
-    description: "Number of correct answers in the session",
+    description: "Total number of correct answers in the session",
     example: 7,
   })
   correctAnswers: number;
 
   @Column({ default: 0 })
   @ApiProperty({
-    description: "Number of incorrect answers in the session",
+    description: "Total number of incorrect answers in the session",
     example: 2,
   })
   incorrectAnswers: number;
@@ -151,7 +151,7 @@ export class GameSession {
 
   @Column({ default: 0 })
   @ApiProperty({
-    description: "Average response time in seconds",
+    description: "The average response time per question in seconds",
     example: 3.5,
   })
   averageResponseTime: number;
