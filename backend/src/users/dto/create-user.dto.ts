@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsOptional, IsArray } from 'class-validator';
+import { IsString, IsEmail, IsOptional, IsObject, IsNumber, IsUUID, IsArray } from 'class-validator';
 import { GameSession } from 'src/game-sessions/entities/game-session.entity';
 
 export class CreateUserDto {
@@ -22,6 +22,13 @@ export class CreateUserDto {
   password: string;
 
   @ApiProperty({
+    description: 'The total score of the user.',
+  })
+  @IsOptional()
+  @IsNumber()
+  totalScore?: number;
+
+  @ApiProperty({
     example: '0x1234567890abcdef1234567890abcdef1234567890',
     description: 'The wallet address of the user',
   })
@@ -29,6 +36,13 @@ export class CreateUserDto {
   @IsString()
   walletAddress?: string;
 
+  @IsOptional()
+  @IsObject()
+  profileCustomization?: {
+    theme?: 'light' | 'dark' | 'system';
+    avatarUrl?: string;
+    bio?: string;
+  };
   @ApiProperty({
     example: '0x1234567890abcdef1234567890abcdef1234567890',
     description: 'The game session',
