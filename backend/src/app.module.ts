@@ -21,8 +21,7 @@ import { StatisticsModule } from './statistics/statistics.module';
 import { LeaderboardsModule } from './leaderboards/leaderboards.module';
 import { LifelineModule } from './lifeline/lifeline.module';
 import { OfflineQuizModule } from './offline-quiz/offline-quiz.module';
-
-
+import { SecurityModule } from './security/security.module';
 
 @Module({
   imports: [
@@ -54,7 +53,8 @@ import { OfflineQuizModule } from './offline-quiz/offline-quiz.module';
     StatisticsModule,
     LeaderboardsModule,
     LifelineModule,
-    OfflineQuizModule
+    OfflineQuizModule,
+    SecurityModule,
   ],
   controllers: [AppController],
   providers: [
