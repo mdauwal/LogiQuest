@@ -9,6 +9,7 @@ import AccountSettings from "../components/AccountSettings";
 import ProfileForm from "../components/ProfileForm";
 
 const Home = () => {
+
 	return (
 		<>
 			{/* paste your page component below here */}
