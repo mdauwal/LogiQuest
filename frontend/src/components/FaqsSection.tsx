@@ -62,35 +62,39 @@ const FaqsSection = () => {
   };
 
   return (
-    <section className="flex flex-col gap-[115px] bg-slate-950 text-white font-inter">
-      <h2 className="font-bold text-[45px]">FAQs</h2>
+    <section className="flex flex-col items-center bg-slate-950 text-white font-inter py-16 px-2 md:px-32 md:py-24">
+      <h2 className="text-3xl md:text-[45px] lg:text-3xl text-center font-bold mb-10 md:mb-24">
+        FAQs
+      </h2>
+
       {/* FAQ container */}
-      <div className="flex flex-col">
+      <div className="w-full flex flex-col">
         {faqs.map((faq, index) => (
-          <div key={index} className="flex flex-col">
+          <div key={index} className="flex flex-col w-full px-2 xl:px-40 2xl:px-[20%]">
             <div
-              className="cursor-pointer flex justify-between py-6 px-8"
+              className="cursor-pointer flex justify-between items-center py-4 md:py-6  w-full"
               onClick={() => toggleAccordion(index)}
             >
-              <h3 className="text-[33px] font-semibold">{faq.question}</h3>
-              <span>
+              <h3 className="text-2xl md:text-[33px] lg:text-2xl font-semibold ">
+                {faq.question}
+              </h3>
               <svg
-          className={`w-8 h-8 transition-transform duration-300 ${
-            index == expandedIndex ? "rotate-180" : "rotate-0"
-          }`}
-          viewBox="0 0 180 100"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="white"
-          stroke="white"
-          strokeWidth="6"
-          strokeLinejoin="round"
-        >
-          <polygon points="10,10 170,10 90,90" />
-        </svg>
-              </span>
+                className={`w-6 md:w-8 h-6 md:h-8 transition-transform duration-300 ${
+                  index === expandedIndex ? "rotate-180" : "rotate-0"
+                }`}
+                viewBox="0 0 180 100"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="white"
+                stroke="white"
+                strokeWidth="6"
+                strokeLinejoin="round"
+              >
+                <polygon points="10,10 170,10 90,90" />
+              </svg>
             </div>
+
             <div
-              className={`mx-5 bg-gradient-to-t rounded-md from-gray-800 to-transparent transition-all duration-500 ease-out overflow-hidden text-lg text-gray-300 ${
+              className={` bg-gradient-to-t rounded-md from-gray-800 to-transparent transition-all duration-500 ease-out overflow-hidden text-lg text-gray-300 ${
                 expandedIndex === index
                   ? "max-h-max opacity-100 p-4"
                   : "max-h-0 opacity-0 p-0"

@@ -8,6 +8,8 @@ import Home from '../pages/Home'
 import LeaderboardPage from "../pages/LeaderboardPage" // Import the LeaderboardPage component
 // import ProtectedRoutes from "./ProtectedRoutes"
 // import Account from "../pages/Account"
+import GameModesPage from "../pages/GameModesPage";
+import Login from "../pages/Login";
 
 const router = createBrowserRouter([
     // /post/new -> add new post (protected, admin layout)
@@ -20,6 +22,10 @@ const router = createBrowserRouter([
         element: <UnauthorizedResource />
     },
     {
+        path: "/sign-in",
+        element: <Login />,
+    },
+    {
         path: '/',
         element: <Layout><Outlet /></Layout>,
         children: [
@@ -30,6 +36,10 @@ const router = createBrowserRouter([
             {
                 path: 'leaderboard',
                 element: <LeaderboardPage />
+            },
+           {
+              path: "game-modes",
+              element: <GameModesPage />,
             },
             // {
             //     element: <PrivateRoutes />,
@@ -51,6 +61,5 @@ const router = createBrowserRouter([
             // },
         ]
     },
-]);
 
 export default router;
