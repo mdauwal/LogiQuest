@@ -24,6 +24,9 @@ import { OfflineQuizModule } from './offline-quiz/offline-quiz.module';
 import { SecurityModule } from './security/security.module';
 import { RedisConfigModule } from './redis/redis.module';
 import { AdminModule } from './admin/admin.module';
+import { QuizModule } from './quiz/quiz.module';
+import { AnalyticsController } from './analytics/analytics.controller';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -60,8 +63,10 @@ import { AdminModule } from './admin/admin.module';
     SecurityModule,
     RedisConfigModule.register(),
     AdminModule,
+    QuizModule,
+    AnalyticsModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AnalyticsController],
   providers: [
     AppService,
     {
