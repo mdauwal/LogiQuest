@@ -75,4 +75,13 @@ export class User {
 
   @OneToMany(() => GameSession, (gameSession) => gameSession.user)
   gameSessions?: GameSession[];
+
+  // @OneToMany(
+  //   () => UserQuiz,
+  //   (userQuiz) => userQuiz.user,
+  // )
+  // userQuizzes: UserQuiz[]
+
+  @Column({ default: "user" })
+  role: string
 }

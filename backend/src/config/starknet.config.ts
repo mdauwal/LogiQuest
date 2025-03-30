@@ -1,7 +1,7 @@
 import { RpcProvider, Signer, Account } from 'starknet';
 
 export const provider = new RpcProvider({
-  nodeUrl: 'https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_7/W5QU9A0a-41vVVrU-de4Oo8LkwXq7UEI'
+  nodeUrl: 'https://starknet-mainnet.g.alchemy.com/starknet/version/rpc/v0_7/lekrIk80ISiYrYzJuGHeuB4eHyRX_i76'
 });
 
 //🔑 How to Get an Alchemy Key:
@@ -13,7 +13,7 @@ export const provider = new RpcProvider({
 // Copy the RPC URL
 
 
-const privateKey = '0x0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
+const privateKey ='0x0027214459e7B037f253CAB8FD62bFA3725Df0b008754320b6F2c8684151A161';
 const signer = new Signer(privateKey);
 
 let starkAccount: Account;

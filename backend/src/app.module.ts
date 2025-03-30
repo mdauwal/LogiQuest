@@ -13,8 +13,8 @@ import { ProgressModule } from './progress/progress.module';
 import { DatabaseModule } from './database/database.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
-import { BlockchainModule } from './blockchain/blockchain.module';
-import { TransactionsModule } from './transactions/transactions.module';
+// import { BlockchainModule } from './blockchain/blockchain.module';
+// import { TransactionsModule } from './transactions/transactions.module';
 import { CategoryModule } from './category/category.module';
 import { StarknetModule } from './starknet/starknet.module';
 import { StatisticsModule } from './statistics/statistics.module';
@@ -22,6 +22,8 @@ import { LeaderboardsModule } from './leaderboards/leaderboards.module';
 import { LifelineModule } from './lifeline/lifeline.module';
 import { OfflineQuizModule } from './offline-quiz/offline-quiz.module';
 import { SecurityModule } from './security/security.module';
+import { RedisConfigModule } from './redis/redis.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -32,6 +34,7 @@ import { SecurityModule } from './security/security.module';
       // envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
       // validate: validateConfig, // Load environment variables
     }),
+    RedisConfigModule.register(),
     ThrottlerModule.forRoot([
       {
         ttl: 60000,
@@ -47,14 +50,16 @@ import { SecurityModule } from './security/security.module';
     ProgressModule,
     StarknetModule,
     DatabaseModule,
-    BlockchainModule,
-    TransactionsModule,
+    // BlockchainModule,
+    // TransactionsModule,
     CategoryModule,
     StatisticsModule,
     LeaderboardsModule,
     LifelineModule,
     OfflineQuizModule,
     SecurityModule,
+    RedisConfigModule.register(),
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [
