@@ -12,8 +12,8 @@ import { UserQuiz } from 'src/quiz/entities/user-quiz.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id?: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ unique: true })
   username: string;
@@ -85,4 +85,7 @@ export class User {
 
   @Column({ default: "user" })
   role: string
+
+  @Column({ default: true })
+  isActive: boolean
 }

@@ -4,8 +4,8 @@ import { UserQuiz } from "./user-quiz.entity"
 
 @Entity("quizzes")
 export class Quiz {
-  @PrimaryGeneratedColumn("uuid")
-  id: string
+  @PrimaryGeneratedColumn()
+  id: number
 
   @Column()
   title: string

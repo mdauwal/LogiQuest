@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProgressModule } from './progress/progress.module';
 import { DatabaseModule } from './database/database.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, Reflector } from '@nestjs/core';
 // import { BlockchainModule } from './blockchain/blockchain.module';
 // import { TransactionsModule } from './transactions/transactions.module';
 import { CategoryModule } from './category/category.module';
@@ -27,6 +27,7 @@ import { AdminModule } from './admin/admin.module';
 import { QuizModule } from './quiz/quiz.module';
 import { AnalyticsController } from './analytics/analytics.controller';
 import { AnalyticsModule } from './analytics/analytics.module';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -68,10 +69,15 @@ import { AnalyticsModule } from './analytics/analytics.module';
   ],
   controllers: [AppController, AnalyticsController],
   providers: [
+    Reflector,
     AppService,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

@@ -224,7 +224,7 @@ export class AnalyticsService {
   async exportData(): Promise<any> {
     // Export all data for external analysis
     const users = await this.userRepository.find({
-      select: ["id", "name", "email", "role", "isActive", "createdAt"],
+      select: ["id", "username", "email", "role", "isActive", "createdAt"],
     })
 
     const quizzes = await this.quizRepository.find({
