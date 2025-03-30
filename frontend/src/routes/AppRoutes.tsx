@@ -1,15 +1,14 @@
 // routes/AppRoutes.jsx  
 import { createBrowserRouter, Outlet } from "react-router-dom"
 import Layout from "../layout/Layout"
-// import PrivateRoutes from './PrivateRoutes'
-import NotFound from "../pages/NotFound"
-import UnauthorizedResource from "../pages/UnauthorizedResource"
-import Home from '../pages/Home'
-import LeaderboardPage from "../pages/LeaderboardPage" // Import the LeaderboardPage component
 // import ProtectedRoutes from "./ProtectedRoutes"
 // import Account from "../pages/Account"
-import GameModesPage from "../pages/GameModesPage";
-import Login from "../pages/Login";
+import NotFound from "../pages/NotFound"
+import UnauthorizedResource from "../pages/UnauthorizedResource"
+import SignIn from "../pages/SignIn";
+import Home from '../pages/Home'
+import GameModes from "../pages/GameModes";
+import GameActivity from "../pages/GameActivity"
 import Dashboard from "../pages/Dashboard"
 
 const router = createBrowserRouter([
@@ -23,30 +22,35 @@ const router = createBrowserRouter([
   },
   {
     path: "/sign-in",
-    element: <Login />,
+    element: <SignIn />,
   },
   {
-    path: '/',
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: '/app',
     element: <Layout><Outlet /></Layout>,
     children: [
       {
         index: true,
-        element: <Home />
+        element: <Home />   //default mode
       },
-      // FOR TESTING PURPOSES ONLY
+      {
+        path: "get-started",
+        element: <GameModes />,
+      },
+      {
+        path: "game-activity",
+        element: <GameActivity />,
+      },
+      // FOR TESTING PURPOSES ONLY, THESE ARE PRIVATES/PROTECTED ROUTES
       {
         path: 'dashboard',
         element: <Dashboard />
       },
-      // FOR TESTING PURPOSES ONLY
-      {
-        path: 'leaderboard',
-        element: <LeaderboardPage />
-      },
-      {
-        path: "game-modes",
-        element: <GameModesPage />,
-      },
+      // FOR TESTING PURPOSES ONLY, THESE ARE PRIVATES/PROTECTED ROUTES
+
       // {
       //     element: <PrivateRoutes />,
       //     children: [
