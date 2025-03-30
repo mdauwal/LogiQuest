@@ -12,54 +12,55 @@ import GameModesPage from "../pages/GameModesPage";
 import Login from "../pages/Login";
 
 const router = createBrowserRouter([
-    // /post/new -> add new post (protected, admin layout)
-    {
-        path: '/*',
-        element: <NotFound />
-    },
-    {
-        path: '/unauthorized',
-        element: <UnauthorizedResource />
-    },
-    {
-        path: "/sign-in",
-        element: <Login />,
-    },
-    {
-        path: '/',
-        element: <Layout><Outlet /></Layout>,
-        children: [
-            {
-                index: true,
-                element: <Home />
-            },
-            {
-                path: 'leaderboard',
-                element: <LeaderboardPage />
-            },
-           {
-              path: "game-modes",
-              element: <GameModesPage />,
-            },
-            // {
-            //     element: <PrivateRoutes />,
-            //     children: [
-            //         {
-            //             path: 'account',
-            //             element: <Account />
-            //         },
-            //         {
-            //             element: <ProtectedRoutes requiredRole={''} />,
-            //             children: [
-            //                 // {
-            //                 //     path: 'home',
-            //                 //     element: <Home />
-            //                 // }
-            //             ]
-            //         }
-            //     ]
-            // },
-        ]
-    },
+  {
+    path: '/*',
+    element: <NotFound />
+  },
+  {
+    path: '/unauthorized',
+    element: <UnauthorizedResource />
+  },
+  {
+    path: "/sign-in",
+    element: <Login />,
+  },
+  {
+    path: '/',
+    element: <Layout><Outlet /></Layout>,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: 'leaderboard',
+        element: <LeaderboardPage />
+      },
+      {
+        path: "game-modes",
+        element: <GameModesPage />,
+      },
+      // {
+      //     element: <PrivateRoutes />,
+      //     children: [
+      //         {
+      //             path: 'account',
+      //             element: <Account />
+      //         },
+      //         {
+      //             element: <ProtectedRoutes requiredRole={''} />,
+      //             children: [
+      //                 // {
+      //                 //     path: 'home',
+      //                 //     element: <Home />
+      //                 // }
+      //             ]
+      //         }
+      //     ]
+      // },
+    ]
+  },
+
+])
 
 export default router;
