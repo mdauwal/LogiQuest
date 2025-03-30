@@ -10,6 +10,7 @@ import LeaderboardPage from "../pages/LeaderboardPage" // Import the Leaderboard
 // import Account from "../pages/Account"
 import GameModesPage from "../pages/GameModesPage";
 import Login from "../pages/Login";
+import Dashboard from "../pages/Dashboard"
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,12 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />
       },
+      // FOR TESTING PURPOSES ONLY
+      {
+        path: 'dashboard',
+        element: <Dashboard />
+      },
+      // FOR TESTING PURPOSES ONLY
       {
         path: 'leaderboard',
         element: <LeaderboardPage />
