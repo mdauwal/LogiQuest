@@ -15,11 +15,12 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 import { Score } from '../../leaderboards/entities/score.entity';
+import { UserQuiz } from 'src/quiz/entities/user-quiz.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id?: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @ApiProperty({ example: 'johndoe', description: 'Unique username of the user' })
   @Column({ unique: true })
@@ -93,4 +94,16 @@ export class User {
   })
   @OneToMany(() => GameSession, (gameSession) => gameSession.user)
   gameSessions?: GameSession[];
+
+  @OneToMany(
+    () => UserQuiz,
+    (userQuiz) => userQuiz.user,
+  )
+  userQuizzes: UserQuiz[]
+
+  @Column({ default: "user" })
+  role: string
+
+  @Column({ default: true })
+  isActive: boolean
 }

@@ -16,16 +16,16 @@ export default function GameModesContainer() {
         Choose Your Game Mode
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Right Column: Game Mode Description */}
+        <div className="md:col-span-2">
+          <GameModeDescription selectedMode={selectedMode} />
+        </div>
         {/* Left Column: Game Modes List */}
         <div className="md:col-span-1">
           <GameModesList
             onSelectMode={handleSelectMode}
             selectedModeId={selectedMode?.id || null}
           />
-        </div>
-        {/* Right Column: Game Mode Description */}
-        <div className="md:col-span-2">
-          <GameModeDescription selectedMode={selectedMode} />
         </div>
       </div>
     </div>

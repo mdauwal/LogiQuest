@@ -55,6 +55,7 @@ export class UsersService {
 
   async createUser(createUserDto: CreateUserDto): Promise<UserResponseDto> {
     const newUser: User = {
+      id: null, // Default value for 'id'
       ...createUserDto,
       walletAddress: createUserDto.walletAddress || '',
       totalScore: 0,
@@ -78,6 +79,9 @@ export class UsersService {
         weekly: [],
         monthly: [],
       },
+      userQuizzes: [], // Default empty array for userQuizzes
+      role: 'user', // Default role as 'user'
+      isActive: true, // Default isActive to true
     };
     const user = this.usersRepository.create(newUser);
     this.usersRepository.save(user);

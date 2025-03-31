@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './filters/all-exceptions.filter';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import helmet from 'helmet';
-import { SecurityMiddleware } from './security/ecurity.middleware';
+import { SecurityMiddleware } from './security/security.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
