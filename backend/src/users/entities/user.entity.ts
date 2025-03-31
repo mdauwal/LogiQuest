@@ -8,11 +8,12 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Score } from '../../leaderboards/entities/score.entity';
+import { UserQuiz } from 'src/quiz/entities/user-quiz.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id?: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column({ unique: true })
   username: string;
@@ -75,4 +76,16 @@ export class User {
 
   @OneToMany(() => GameSession, (gameSession) => gameSession.user)
   gameSessions?: GameSession[];
+
+  @OneToMany(
+    () => UserQuiz,
+    (userQuiz) => userQuiz.user,
+  )
+  userQuizzes: UserQuiz[]
+
+  @Column({ default: "user" })
+  role: string
+
+  @Column({ default: true })
+  isActive: boolean
 }
